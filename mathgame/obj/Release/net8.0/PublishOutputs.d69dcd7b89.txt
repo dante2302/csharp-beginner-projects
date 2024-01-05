@@ -1,0 +1,5 @@
+C:\Users\Dante\Desktop\mathgame.exe
+C:\Users\Dante\Desktop\mathgame.dll
+C:\Users\Dante\Desktop\mathgame.deps.json
+C:\Users\Dante\Desktop\mathgame.runtimeconfig.json
+C:\Users\Dante\Desktop\mathgame.pdb
