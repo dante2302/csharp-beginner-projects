@@ -44,21 +44,28 @@ static void PrintHomeScreen()
 public static class PlayGame
 {
     private static Random random = new();
+    private static int rounds = 3;
 
     private static void PrintNums(int num1, int num2, string mode)
     {
         Console.WriteLine($"{num1} {mode} {num2}");
     }
 
+    private static int GetAnswer()
+    {
+        int realAnswer;
+        Int32.TryParse(Console.ReadLine(), out realAnswer);
+        return realAnswer;
+    }
+
     public static void Addition()
     {
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < rounds; i++)
         {
             int randNum1 = random.Next(0, 9);
             int randNum2 = random.Next(0, 9);
             PrintNums(randNum1, randNum2, "+");
-            int realAnswer;
-            Int32.TryParse(Console.ReadLine(), out realAnswer);
+            GetAnswer();
         }
     }
 
