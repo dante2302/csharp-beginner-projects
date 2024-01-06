@@ -45,7 +45,7 @@ public static class PlayGame
     private static Random random = new();
     private static int lowerRandomBoundary = 0;
     private static int upperRandomBoundary = 10;
-    private static int rounds = 3;
+    private static int rounds = 5;
     private static int maxPoints = rounds;
 
     private static void PrintNums(int num1, int num2, string mode)
@@ -79,16 +79,29 @@ public static class PlayGame
         {
             int randNum1 = random.Next(lowerRandomBoundary, upperRandomBoundary);
             int randNum2 = random.Next(lowerRandomBoundary, upperRandomBoundary);
+            Console.WriteLine($"You've got {points} points");
             PrintNums(randNum1, randNum2, "+");
             int answer = GetAnswer();
-            if (answer == randNum1 + randNum2)
-                points++;
-        }
 
+            if (answer == randNum1 + randNum2)
+            {
+                Console.WriteLine("Correct! +1 point");
+                points++;
+            }
+
+            else
+            {
+                Console.WriteLine("Wrong!");
+            }
+        }
+        Console.Clear();
+        Console.WriteLine($"You finish with {points} points!");
         if(points >= maxPoints / 2)
+
         {
             Console.WriteLine("You win!  Good job!");
         }
+
         else
         {
             Console.WriteLine($"Sorry, you lost!, you only got {points} points");
