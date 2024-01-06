@@ -54,7 +54,14 @@ public static class PlayGame
     private static int GetAnswer()
     {
         int realAnswer;
-        Int32.TryParse(Console.ReadLine(), out realAnswer);
+        bool isValidAnswer = Int32.TryParse(Console.ReadLine(), out realAnswer);
+
+        while (!isValidAnswer)
+        {
+            Console.WriteLine("Invalid Answer!");
+            isValidAnswer = Int32.TryParse(Console.ReadLine(), out realAnswer);
+        }
+
         return realAnswer;
     }
 
