@@ -5,29 +5,29 @@ using System.Security.Cryptography;
 
 
 PrintHomeScreen();
-var option = Console.ReadLine().ToUpper();
-switch (option)
+var option = Console.ReadKey();
+
+switch (option.Key)
 {
-    case "A":
+    case ConsoleKey.A:
         PlayGame.Addition();
         break;
-    case "S":
+    case ConsoleKey.S:
         PlayGame.Subtraction();
         break;
-    case "M":
+    case ConsoleKey.M:
         PlayGame.Multiplication();
         break;
-    case "D":
+    case ConsoleKey.D:
         PlayGame.Division();
         break;
- //   case "Q":
-  //      Environment.Exit(0);
-   //     break;
+    case ConsoleKey.Q:
+        Environment.Exit(0);
+        break;
     default:
         Console.WriteLine("ok");
         break;
 }
-
 Console.ReadKey();
 static void PrintHomeScreen()
 {
