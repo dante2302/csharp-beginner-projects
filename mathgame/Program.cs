@@ -38,12 +38,6 @@ public static class Helper
         Console.WriteLine("D - Division");
         Console.WriteLine("Q - Quit\n");
     }
-    public static void PrintNums(int num1, int num2, string mode)
-    {
-        Console.WriteLine("------");
-        Console.WriteLine($"{num1} {mode} {num2}");
-        Console.WriteLine("------");
-    }
     public static int GetAnswer()
     {
         int answer;
@@ -79,7 +73,7 @@ public static class Helper
         }
     }
 }
-public static class PlayGame
+public static class GameEngine
 {
     private static Random random = new();
     private static int lowerRandomBoundary = 0;
@@ -87,7 +81,7 @@ public static class PlayGame
     private static int rounds = 5;
     private static int maxPoints = rounds;
 
-    public static void Addition()
+    public static void Play(string mode)
     {
         Console.Clear();
         int points = 0;
@@ -96,13 +90,20 @@ public static class PlayGame
         {
             int randNum1 = random.Next(lowerRandomBoundary, upperRandomBoundary);
             int randNum2 = random.Next(lowerRandomBoundary, upperRandomBoundary);
-            object result = new DataTable().Compute($"{randNum1} + {randNum2}", null);
+            string expression = $"{randNum1} {mode} {randNum2}";
+
+            Console.WriteLine("-------");
+            Console.WriteLine(expression);
+            Console.WriteLine("-------");
+
+            object result = new DataTable().Compute(expression, null);
+            int correctAnswer = Convert.ToInt32(result);
+
             Console.WriteLine($"You've got {points} points");
-            Console.WriteLine(Convert.ToInt32(result));
-            Helper.PrintNums(randNum1, randNum2, "+");
             int answer = Helper.GetAnswer();
+
             Console.Clear();
-            bool correct = (answer == randNum1 + randNum2);
+            bool correct = (answer == correctAnswer);
             if (correct)
                 points++;
             Helper.printCorrect(correct);
