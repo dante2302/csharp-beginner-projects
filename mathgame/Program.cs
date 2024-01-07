@@ -4,7 +4,7 @@ using System.Numerics;
 using System.Security.Cryptography;
 
 
-PrintHomeScreen();
+Helper.PrintHomeScreen();
 var option = Console.ReadKey();
 
 switch (option.Key)
@@ -28,38 +28,28 @@ switch (option.Key)
         Console.WriteLine("ok");
         break;
 }
-Console.ReadKey();
-static void PrintHomeScreen()
+public static class Helper
 {
-    Console.WriteLine("Hello");
-    Console.WriteLine("This is a MathGame! Choose an option:\n");
-    Console.WriteLine("A - Addition");
-    Console.WriteLine("S - Subtraction");
-    Console.WriteLine("M - Multiplication");
-    Console.WriteLine("D - Division");
-    Console.WriteLine("Q - Quit\n");
-}
-
-public static class PlayGame
-{
-    private static Random random = new();
-    private static int lowerRandomBoundary = 0;
-    private static int upperRandomBoundary = 10;
-    private static int rounds = 5;
-    private static int maxPoints = rounds;
-
-    private static void PrintNums(int num1, int num2, string mode)
+    public static void PrintHomeScreen()
+    {
+        Console.WriteLine("Hello");
+        Console.WriteLine("This is a MathGame! Choose an option:\n");
+        Console.WriteLine("A - Addition");
+        Console.WriteLine("S - Subtraction");
+        Console.WriteLine("M - Multiplication");
+        Console.WriteLine("D - Division");
+        Console.WriteLine("Q - Quit\n");
+    }
+    public static void PrintNums(int num1, int num2, string mode)
     {
         Console.WriteLine("------");
         Console.WriteLine($"{num1} {mode} {num2}");
         Console.WriteLine("------");
     }
-
-    private static int GetAnswer()
+    public static int GetAnswer()
     {
         int answer;
         bool isValidAnswer = Int32.TryParse(Console.ReadLine(), out answer);
-        Console.Clear();
 
         while (!isValidAnswer)
         {
@@ -69,6 +59,36 @@ public static class PlayGame
 
         return answer;
     }
+    public static void printCorrect(bool correct)
+    {
+        Console.WriteLine(correct ? "Correct! +1 point" : "Wrong!");
+
+    }
+    public static void determineWin(int points, int maxPoints)
+    {
+        Console.Clear();
+        Console.WriteLine($"You finish with {points} points!");
+        if(points >= maxPoints / 2)
+        {
+            Console.WriteLine("You win!  Good job!");
+            Console.WriteLine("Press any key to continue.");
+        }
+
+        else
+        {
+            Console.WriteLine($"Sorry, you lost!");
+            Console.WriteLine("Press any key to continue.");
+        }
+    }
+}
+public static class PlayGame
+{
+    private static Random random = new();
+    private static int lowerRandomBoundary = 0;
+    private static int upperRandomBoundary = 10;
+    private static int rounds = 5;
+    private static int maxPoints = rounds;
+
 
     public static void Addition()
     {
@@ -80,32 +100,15 @@ public static class PlayGame
             int randNum1 = random.Next(lowerRandomBoundary, upperRandomBoundary);
             int randNum2 = random.Next(lowerRandomBoundary, upperRandomBoundary);
             Console.WriteLine($"You've got {points} points");
-            PrintNums(randNum1, randNum2, "+");
-            int answer = GetAnswer();
-
-            if (answer == randNum1 + randNum2)
-            {
-                Console.WriteLine("Correct! +1 point");
+            Helper.PrintNums(randNum1, randNum2, "+");
+            int answer = Helper.GetAnswer();
+            Console.Clear();
+            bool correct = (answer == randNum1 + randNum2);
+            if (correct)
                 points++;
-            }
-
-            else
-            {
-                Console.WriteLine("Wrong!");
-            }
+            Helper.printCorrect(correct);
         }
-        Console.Clear();
-        Console.WriteLine($"You finish with {points} points!");
-        if(points >= maxPoints / 2)
-
-        {
-            Console.WriteLine("You win!  Good job!");
-        }
-
-        else
-        {
-            Console.WriteLine($"Sorry, you lost!, you only got {points} points");
-        }
+        Helper.determineWin(points, maxPoints);
     }
 
     public static void Subtraction()
