@@ -2,39 +2,50 @@
 
 using System.Data;
 
-Helper.PrintHomeScreen();
-var option = Console.ReadKey();
-static void startKeyHandler(ConsoleKeyInfo option)
+startScreen.initial();
+class startScreen
 {
-    switch (option.Key)
+    public static void initial()
     {
-        case ConsoleKey.A:
-            GameEngine.Play("+");
-            break;
+        Helper.PrintHomeScreen();
+        var option = Console.ReadKey();
+        startKeyHandler(option);
+    }
 
-        case ConsoleKey.S:
-            GameEngine.Play("-");
-            break;
+    static void startKeyHandler(ConsoleKeyInfo option)
+    {
+        switch (option.Key)
+        {
+            case ConsoleKey.A:
+                GameEngine.Play("+");
+                break;
 
-        case ConsoleKey.M:
-            GameEngine.Play("*");
-            break;
+            case ConsoleKey.S:
+                GameEngine.Play("-");
+                break;
 
-        case ConsoleKey.D:
-            GameEngine.Play("/");
-            break;
+            case ConsoleKey.M:
+                GameEngine.Play("*");
+                break;
 
-        case ConsoleKey.Q:
-            Environment.Exit(0);
-            break;
+            case ConsoleKey.D:
+                GameEngine.Play("/");
+                break;
 
-        default:
-            Console.WriteLine("ok");
-            break;
+            case ConsoleKey.H:
+                GameEngine.getHistory();
+                break;
+
+            case ConsoleKey.Q:
+                Environment.Exit(0);
+                break;
+
+            default:
+                Console.WriteLine("ok");
+                break;
+        }
     }
 }
-
-startKeyHandler(option);
 public static class Helper
 {
     public static void PrintHomeScreen()
@@ -45,6 +56,7 @@ public static class Helper
         Console.WriteLine("S - Subtraction");
         Console.WriteLine("M - Multiplication");
         Console.WriteLine("D - Division");
+        Console.WriteLine("H - History");
         Console.WriteLine("Q - Quit\n");
     }
     public static int GetAnswer()
@@ -64,21 +76,25 @@ public static class Helper
     {
         Console.WriteLine(correct ? "Correct! +1 point" : "Wrong!");
     }
-    public static void determineWin(int points, int maxPoints)
+    public static bool determineWin(int points, int maxPoints)
     {
         Console.Clear();
         Console.WriteLine($"You finish with {points} points!");
+        bool isWin;
         if(points >= maxPoints / 2)
         {
             Console.WriteLine("You win!  Good job!");
-            Console.WriteLine("Press any key to continue.");
+            isWin = true;
         }
+
 
         else
         {
             Console.WriteLine($"Sorry, you lost!");
-            Console.WriteLine("Press any key to continue.");
+            isWin = false;
         }
+        Console.WriteLine("Press any key to continue.");
+        return isWin;
     }
 }
 public class GameEngine
@@ -88,7 +104,7 @@ public class GameEngine
     readonly static int upperRandomBoundary = 10;
     readonly static int rounds = 5;
     readonly static int maxPoints = rounds;
-
+    private static List<string> history = ["5 + 5 | answer : 2"] ;
     public static void Play(string mode)
     {
         Console.Clear();
@@ -106,17 +122,28 @@ public class GameEngine
 
             object result = new DataTable().Compute(expression, null);
             int correctAnswer = Convert.ToInt32(result);
-
             Console.WriteLine($"You've got {points} points");
             int answer = Helper.GetAnswer();
-
+            history.Add($"\t{expression}  |  answer: {answer}\n");
             Console.Clear();
             bool correct = (answer == correctAnswer);
             if (correct)
                 points++;
             Helper.printCorrect(correct);
         }
-        Helper.determineWin(points, maxPoints);
+
+        bool win = Helper.determineWin(points, maxPoints);
+        history.Add(win ? "\n ---- You won this one! ---- \n": "\n ---- You lost this one! ---- \n" );
+        Console.ReadKey();
+            Console.Clear();
+            startScreen.initial();
+    }
+    public static void getHistory()
+    {
+        Console.Clear();
+        Console.WriteLine("Your History: ");
+        foreach(string record in history)
+            Console.WriteLine(record);
     }
 }
 
