@@ -2,39 +2,50 @@
 
 using System.Data;
 
-Helper.PrintHomeScreen();
-var option = Console.ReadKey();
-static void startKeyHandler(ConsoleKeyInfo option)
+startScreen.initial();
+class startScreen
 {
-    switch (option.Key)
+    public static void initial()
     {
-        case ConsoleKey.A:
-            GameEngine.Play("+");
-            break;
+        Helper.PrintHomeScreen();
+        var option = Console.ReadKey();
+        startKeyHandler(option);
+    }
 
-        case ConsoleKey.S:
-            GameEngine.Play("-");
-            break;
+    static void startKeyHandler(ConsoleKeyInfo option)
+    {
+        switch (option.Key)
+        {
+            case ConsoleKey.A:
+                GameEngine.Play("+");
+                break;
 
-        case ConsoleKey.M:
-            GameEngine.Play("*");
-            break;
+            case ConsoleKey.S:
+                GameEngine.Play("-");
+                break;
 
-        case ConsoleKey.D:
-            GameEngine.Play("/");
-            break;
+            case ConsoleKey.M:
+                GameEngine.Play("*");
+                break;
 
-        case ConsoleKey.Q:
-            Environment.Exit(0);
-            break;
+            case ConsoleKey.D:
+                GameEngine.Play("/");
+                break;
 
-        default:
-            Console.WriteLine("ok");
-            break;
+            case ConsoleKey.H:
+                GameEngine.getHistory();
+                break;
+
+            case ConsoleKey.Q:
+                Environment.Exit(0);
+                break;
+
+            default:
+                Console.WriteLine("ok");
+                break;
+        }
     }
 }
-
-startKeyHandler(option);
 public static class Helper
 {
     public static void PrintHomeScreen()
@@ -45,6 +56,7 @@ public static class Helper
         Console.WriteLine("S - Subtraction");
         Console.WriteLine("M - Multiplication");
         Console.WriteLine("D - Division");
+        Console.WriteLine("H - History");
         Console.WriteLine("Q - Quit\n");
     }
     public static int GetAnswer()
@@ -68,17 +80,14 @@ public static class Helper
     {
         Console.Clear();
         Console.WriteLine($"You finish with {points} points!");
+
         if(points >= maxPoints / 2)
-        {
             Console.WriteLine("You win!  Good job!");
-            Console.WriteLine("Press any key to continue.");
-        }
 
         else
-        {
             Console.WriteLine($"Sorry, you lost!");
-            Console.WriteLine("Press any key to continue.");
-        }
+
+        Console.WriteLine("Press any key to continue.");
     }
 }
 public class GameEngine
@@ -88,7 +97,7 @@ public class GameEngine
     readonly static int upperRandomBoundary = 10;
     readonly static int rounds = 5;
     readonly static int maxPoints = rounds;
-
+    private static List<string> history = ["5 + 5 | answer : 2"] ;
     public static void Play(string mode)
     {
         Console.Clear();
@@ -106,17 +115,26 @@ public class GameEngine
 
             object result = new DataTable().Compute(expression, null);
             int correctAnswer = Convert.ToInt32(result);
-
             Console.WriteLine($"You've got {points} points");
             int answer = Helper.GetAnswer();
-
+            history.Add($"{expression} | answer: {answer}");
             Console.Clear();
             bool correct = (answer == correctAnswer);
             if (correct)
                 points++;
             Helper.printCorrect(correct);
         }
+
         Helper.determineWin(points, maxPoints);
+        Console.ReadKey();
+            Console.Clear();
+            startScreen.initial();
+    }
+    public static void getHistory()
+    {
+        Console.Clear();    
+        foreach(string record in history)
+            Console.WriteLine(record);
     }
 }
 
