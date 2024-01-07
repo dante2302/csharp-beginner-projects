@@ -1,65 +1,56 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using System.Numerics;
-using System.Security.Cryptography;
+using System.Data;
 
-
-PrintHomeScreen();
-var option = Console.ReadLine().ToUpper();
-switch (option)
+Helper.PrintHomeScreen();
+var option = Console.ReadKey();
+static void startKeyHandler(ConsoleKeyInfo option)
 {
-    case "A":
-        PlayGame.Addition();
-        break;
-    case "S":
-        PlayGame.Subtraction();
-        break;
-    case "M":
-        PlayGame.Multiplication();
-        break;
-    case "D":
-        PlayGame.Division();
-        break;
- //   case "Q":
-  //      Environment.Exit(0);
-   //     break;
-    default:
-        Console.WriteLine("ok");
-        break;
-}
-
-Console.ReadKey();
-static void PrintHomeScreen()
-{
-    Console.WriteLine("Hello");
-    Console.WriteLine("This is a MathGame! Choose an option:\n");
-    Console.WriteLine("A - Addition");
-    Console.WriteLine("S - Subtraction");
-    Console.WriteLine("M - Multiplication");
-    Console.WriteLine("D - Division");
-    Console.WriteLine("Q - Quit\n");
-}
-
-public static class PlayGame
-{
-    private static Random random = new();
-    private static int lowerRandomBoundary = 0;
-    private static int upperRandomBoundary = 10;
-    private static int rounds = 5;
-    private static int maxPoints = rounds;
-
-    private static void PrintNums(int num1, int num2, string mode)
+    switch (option.Key)
     {
-        Console.WriteLine("------");
-        Console.WriteLine($"{num1} {mode} {num2}");
-        Console.WriteLine("------");
-    }
+        case ConsoleKey.A:
+            GameEngine.Play("+");
+            break;
 
-    private static int GetAnswer()
+        case ConsoleKey.S:
+            GameEngine.Play("-");
+            break;
+
+        case ConsoleKey.M:
+            GameEngine.Play("*");
+            break;
+
+        case ConsoleKey.D:
+            GameEngine.Play("/");
+            break;
+
+        case ConsoleKey.Q:
+            Environment.Exit(0);
+            break;
+
+        default:
+            Console.WriteLine("ok");
+            break;
+    }
+}
+
+startKeyHandler(option);
+public static class Helper
+{
+    public static void PrintHomeScreen()
+    {
+        Console.WriteLine("Hello");
+        Console.WriteLine("This is a MathGame! Choose an option:\n");
+        Console.WriteLine("A - Addition");
+        Console.WriteLine("S - Subtraction");
+        Console.WriteLine("M - Multiplication");
+        Console.WriteLine("D - Division");
+        Console.WriteLine("Q - Quit\n");
+    }
+    public static int GetAnswer()
     {
         int answer;
         bool isValidAnswer = Int32.TryParse(Console.ReadLine(), out answer);
-        Console.Clear();
 
         while (!isValidAnswer)
         {
@@ -69,8 +60,36 @@ public static class PlayGame
 
         return answer;
     }
+    public static void printCorrect(bool correct)
+    {
+        Console.WriteLine(correct ? "Correct! +1 point" : "Wrong!");
+    }
+    public static void determineWin(int points, int maxPoints)
+    {
+        Console.Clear();
+        Console.WriteLine($"You finish with {points} points!");
+        if(points >= maxPoints / 2)
+        {
+            Console.WriteLine("You win!  Good job!");
+            Console.WriteLine("Press any key to continue.");
+        }
 
-    public static void Addition()
+        else
+        {
+            Console.WriteLine($"Sorry, you lost!");
+            Console.WriteLine("Press any key to continue.");
+        }
+    }
+}
+public class GameEngine
+{
+    private static Random random = new();
+    readonly static int lowerRandomBoundary = 0;
+    readonly static int upperRandomBoundary = 10;
+    readonly static int rounds = 5;
+    readonly static int maxPoints = rounds;
+
+    public static void Play(string mode)
     {
         Console.Clear();
         int points = 0;
@@ -79,48 +98,25 @@ public static class PlayGame
         {
             int randNum1 = random.Next(lowerRandomBoundary, upperRandomBoundary);
             int randNum2 = random.Next(lowerRandomBoundary, upperRandomBoundary);
+            string expression = $"{randNum1} {mode} {randNum2}";
+
+            Console.WriteLine("-------");
+            Console.WriteLine(expression);
+            Console.WriteLine("-------");
+
+            object result = new DataTable().Compute(expression, null);
+            int correctAnswer = Convert.ToInt32(result);
+
             Console.WriteLine($"You've got {points} points");
-            PrintNums(randNum1, randNum2, "+");
-            int answer = GetAnswer();
+            int answer = Helper.GetAnswer();
 
-            if (answer == randNum1 + randNum2)
-            {
-                Console.WriteLine("Correct! +1 point");
+            Console.Clear();
+            bool correct = (answer == correctAnswer);
+            if (correct)
                 points++;
-            }
-
-            else
-            {
-                Console.WriteLine("Wrong!");
-            }
+            Helper.printCorrect(correct);
         }
-        Console.Clear();
-        Console.WriteLine($"You finish with {points} points!");
-        if(points >= maxPoints / 2)
-
-        {
-            Console.WriteLine("You win!  Good job!");
-        }
-
-        else
-        {
-            Console.WriteLine($"Sorry, you lost!, you only got {points} points");
-        }
-    }
-
-    public static void Subtraction()
-    {
-
-    }
-
-    public static void Multiplication()
-    {
-
-    }
-
-    public static void Division()
-    {
-
+        Helper.determineWin(points, maxPoints);
     }
 }
 
