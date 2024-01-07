@@ -76,18 +76,25 @@ public static class Helper
     {
         Console.WriteLine(correct ? "Correct! +1 point" : "Wrong!");
     }
-    public static void determineWin(int points, int maxPoints)
+    public static bool determineWin(int points, int maxPoints)
     {
         Console.Clear();
         Console.WriteLine($"You finish with {points} points!");
-
+        bool isWin;
         if(points >= maxPoints / 2)
+        {
             Console.WriteLine("You win!  Good job!");
+            isWin = true;
+        }
+
 
         else
+        {
             Console.WriteLine($"Sorry, you lost!");
-
+            isWin = false;
+        }
         Console.WriteLine("Press any key to continue.");
+        return isWin;
     }
 }
 public class GameEngine
@@ -117,7 +124,7 @@ public class GameEngine
             int correctAnswer = Convert.ToInt32(result);
             Console.WriteLine($"You've got {points} points");
             int answer = Helper.GetAnswer();
-            history.Add($"{expression} | answer: {answer}");
+            history.Add($"\t{expression}  |  answer: {answer}\n");
             Console.Clear();
             bool correct = (answer == correctAnswer);
             if (correct)
@@ -125,14 +132,16 @@ public class GameEngine
             Helper.printCorrect(correct);
         }
 
-        Helper.determineWin(points, maxPoints);
+        bool win = Helper.determineWin(points, maxPoints);
+        history.Add(win ? "\n ---- You won this one! ---- \n": "\n ---- You lost this one! ---- \n" );
         Console.ReadKey();
             Console.Clear();
             startScreen.initial();
     }
     public static void getHistory()
     {
-        Console.Clear();    
+        Console.Clear();
+        Console.WriteLine("Your History: ");
         foreach(string record in history)
             Console.WriteLine(record);
     }
