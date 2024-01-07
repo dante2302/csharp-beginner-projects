@@ -1,8 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using System.Numerics;
-using System.Security.Cryptography;
-
+using System.Data;
 
 Helper.PrintHomeScreen();
 var option = Console.ReadKey();
@@ -89,7 +87,6 @@ public static class PlayGame
     private static int rounds = 5;
     private static int maxPoints = rounds;
 
-
     public static void Addition()
     {
         Console.Clear();
@@ -99,7 +96,9 @@ public static class PlayGame
         {
             int randNum1 = random.Next(lowerRandomBoundary, upperRandomBoundary);
             int randNum2 = random.Next(lowerRandomBoundary, upperRandomBoundary);
+            object result = new DataTable().Compute($"{randNum1} + {randNum2}", null);
             Console.WriteLine($"You've got {points} points");
+            Console.WriteLine(Convert.ToInt32(result));
             Helper.PrintNums(randNum1, randNum2, "+");
             int answer = Helper.GetAnswer();
             Console.Clear();
