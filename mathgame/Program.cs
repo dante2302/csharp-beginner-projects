@@ -4,28 +4,37 @@ using System.Data;
 
 Helper.PrintHomeScreen();
 var option = Console.ReadKey();
-
-switch (option.Key)
+static void startKeyHandler(ConsoleKeyInfo option)
 {
-    case ConsoleKey.A:
-        PlayGame.Addition();
-        break;
-    case ConsoleKey.S:
-        PlayGame.Subtraction();
-        break;
-    case ConsoleKey.M:
-        PlayGame.Multiplication();
-        break;
-    case ConsoleKey.D:
-        PlayGame.Division();
-        break;
-    case ConsoleKey.Q:
-        Environment.Exit(0);
-        break;
-    default:
-        Console.WriteLine("ok");
-        break;
+    switch (option.Key)
+    {
+        case ConsoleKey.A:
+            GameEngine.Play("+");
+            break;
+
+        case ConsoleKey.S:
+            GameEngine.Play("-");
+            break;
+
+        case ConsoleKey.M:
+            GameEngine.Play("*");
+            break;
+
+        case ConsoleKey.D:
+            GameEngine.Play("/");
+            break;
+
+        case ConsoleKey.Q:
+            Environment.Exit(0);
+            break;
+
+        default:
+            Console.WriteLine("ok");
+            break;
+    }
 }
+
+startKeyHandler(option);
 public static class Helper
 {
     public static void PrintHomeScreen()
@@ -54,7 +63,6 @@ public static class Helper
     public static void printCorrect(bool correct)
     {
         Console.WriteLine(correct ? "Correct! +1 point" : "Wrong!");
-
     }
     public static void determineWin(int points, int maxPoints)
     {
@@ -73,13 +81,13 @@ public static class Helper
         }
     }
 }
-public static class GameEngine
+public class GameEngine
 {
     private static Random random = new();
-    private static int lowerRandomBoundary = 0;
-    private static int upperRandomBoundary = 10;
-    private static int rounds = 5;
-    private static int maxPoints = rounds;
+    readonly static int lowerRandomBoundary = 0;
+    readonly static int upperRandomBoundary = 10;
+    readonly static int rounds = 5;
+    readonly static int maxPoints = rounds;
 
     public static void Play(string mode)
     {
@@ -109,21 +117,6 @@ public static class GameEngine
             Helper.printCorrect(correct);
         }
         Helper.determineWin(points, maxPoints);
-    }
-
-    public static void Subtraction()
-    {
-
-    }
-
-    public static void Multiplication()
-    {
-
-    }
-
-    public static void Division()
-    {
-
     }
 }
 
