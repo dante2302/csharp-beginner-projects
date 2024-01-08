@@ -117,7 +117,7 @@ public class GameEngine
             string expression = $"{randNum1} {mode} {randNum2}";
 
             Console.WriteLine("-------");
-            Console.WriteLine($"expression");
+            Console.WriteLine(expression);
             Console.WriteLine("-------");
 
             object result = new DataTable().Compute(expression, null);
@@ -144,7 +144,11 @@ public class GameEngine
         Console.WriteLine("Your History: \n");
         foreach(string record in history)
             Console.WriteLine(record);
-        Console.WriteLine("Press any key to go back./");
+        Console.WriteLine("Press any key to go back.");
+        Console.ReadKey();
+        Console.Clear();
+        startScreen.initial();
+
     }
 }
 
