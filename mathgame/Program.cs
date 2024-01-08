@@ -104,7 +104,7 @@ public class GameEngine
     readonly static int upperRandomBoundary = 10;
     readonly static int rounds = 5;
     readonly static int maxPoints = rounds;
-    private static List<string> history = ["5 + 5 | answer : 2"] ;
+    private static List<string> history = [];
     public static void Play(string mode)
     {
         Console.Clear();
@@ -124,7 +124,7 @@ public class GameEngine
             int correctAnswer = Convert.ToInt32(result);
             Console.WriteLine($"You've got {points} points");
             int answer = Helper.GetAnswer();
-            history.Add($"\t{expression}  |  answer: {answer}\n");
+            history.Add($"\t{expression}  |  answer: {answer} | correctAnswer: {correctAnswer}\n");
             Console.Clear();
             bool correct = (answer == correctAnswer);
             if (correct)
@@ -133,17 +133,22 @@ public class GameEngine
         }
 
         bool win = Helper.determineWin(points, maxPoints);
-        history.Add(win ? "\n ---- You won this one! ---- \n": "\n ---- You lost this one! ---- \n" );
+        history.Add(win ? "\n\t ---- You won this one! ---- \n" : "\n\t ---- You lost this one! ---- \n" ); 
         Console.ReadKey();
-            Console.Clear();
-            startScreen.initial();
+        Console.Clear();
+        startScreen.initial();
     }
     public static void getHistory()
     {
         Console.Clear();
-        Console.WriteLine("Your History: ");
+        Console.WriteLine("Your History: \n");
         foreach(string record in history)
             Console.WriteLine(record);
+        Console.WriteLine("Press any key to go back.");
+        Console.ReadKey();
+        Console.Clear();
+        startScreen.initial();
+
     }
 }
 
