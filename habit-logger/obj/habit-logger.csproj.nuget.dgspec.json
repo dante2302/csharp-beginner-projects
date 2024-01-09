@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Dante\\Desktop\\csharp-beginner-projects\\mathgame\\mathgame.csproj": {}
+    "C:\\Users\\Dante\\Desktop\\csharp-beginner-projects\\habit-logger\\habit-logger.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Dante\\Desktop\\csharp-beginner-projects\\mathgame\\mathgame.csproj": {
+    "C:\\Users\\Dante\\Desktop\\csharp-beginner-projects\\habit-logger\\habit-logger.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Dante\\Desktop\\csharp-beginner-projects\\mathgame\\mathgame.csproj",
-        "projectName": "mathgame",
-        "projectPath": "C:\\Users\\Dante\\Desktop\\csharp-beginner-projects\\mathgame\\mathgame.csproj",
+        "projectUniqueName": "C:\\Users\\Dante\\Desktop\\csharp-beginner-projects\\habit-logger\\habit-logger.csproj",
+        "projectName": "habit-logger",
+        "projectPath": "C:\\Users\\Dante\\Desktop\\csharp-beginner-projects\\habit-logger\\habit-logger.csproj",
         "packagesPath": "C:\\Users\\Dante\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Dante\\Desktop\\csharp-beginner-projects\\mathgame\\obj\\",
+        "outputPath": "C:\\Users\\Dante\\Desktop\\csharp-beginner-projects\\habit-logger\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Dante\\AppData\\Roaming\\NuGet\\NuGet.Config",
