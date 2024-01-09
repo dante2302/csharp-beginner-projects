@@ -68,6 +68,6 @@ $RECYCLE.BIN/
 *.lnk
 
 # Ignore bin and obj folders
-bin/
-obj/
-.vs/
+*/bin/
+*/obj/
+*/.vs/
