@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "habit-logger": {
+      "commandName": "Project",
+      "workingDirectory": "C:\\Users\\Dante\\Desktop\\csharp-beginner-projects\\habit-logger"
+    }
+  }
+}
