@@ -1,8 +1,8 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using Microsoft.Data.Sqlite;
+using System.Globalization;
 
-DataAcessManager.StartConnection();
-
+DataAcessManager.InitialSetup();
 MenuHandler.MainMenu();
 
 class MenuHandler
@@ -31,6 +31,8 @@ class MenuHandler
                 break;
 
             case ConsoleKey.D1:
+                Console.Clear();
+                DataAcessManager.GetAll();
                 break;
 
             case ConsoleKey.D2:
@@ -65,37 +67,85 @@ class MenuHandler
 }
 class DataAcessManager()
 {
-    static string connectionString = @"Data Source=habit-logger.db";
-    public static void StartConnection()
+    internal static void ExecuteNonQueryCommand(string command)
     {
+        string connectionString = @"Data Source=habit-logger.db";
         using (var connection = new SqliteConnection(connectionString))
-
         {
             connection.Open();
             var tableCmd = connection.CreateCommand();
             tableCmd.CommandText =
-                @"CREATE TABLE IF NOT EXISTS drinking_aceton(
-            Id INTEGER PRIMARY KEY AUTOINCREMENT,
-            Quantity INTEGER,
-            Date TEXT
-            )";
+                command;
             tableCmd.ExecuteNonQuery();
             connection.Close();
         }
+
+    }
+    public static void InitialSetup()
+    {
+        ExecuteNonQueryCommand(
+            @"CREATE TABLE IF NOT EXISTS drinking_aceton(
+                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                Quantity INTEGER,
+                Date TEXT
+            )"
+        );
     }
     public static void Insert()
     {
         string date = MenuHandler.getDateInput();
         int quantity = MenuHandler.getQuantityInput();
+        ExecuteNonQueryCommand(
+            $"INSERT INTO drinking_aceton(date, quantity) VALUES('{date}', {quantity})"
+        );
+        Console.ReadKey();
+        MenuHandler.MainMenu();
+    }
 
+    public static void GetAll()
+    {
+        string connectionString = @"Data Source=habit-logger.db";
         using (var connection = new SqliteConnection(connectionString))
         {
             connection.Open();
             var tableCmd = connection.CreateCommand();
-            tableCmd.CommandText =
-                $"INSERT INTO drinking_aceton(date, quantity) VALUES('{date}', {quantity})";
-            tableCmd.ExecuteNonQuery();
+            tableCmd.CommandText = $"SELECT * FROM drinking_aceton ";
+
+            List<DrinkingAcetonRecord> tableData = new();
+            SqliteDataReader reader = tableCmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    tableData.Add(
+                        new DrinkingAcetonRecord
+                        {
+                            Id = reader.GetInt32(0),
+                            Quantity = reader.GetInt32(1),
+                            Date = reader.GetString(2)
+                        }
+                    );
+                }
+            }
+            else
+            {
+                Console.WriteLine("No rows found.");
+            }
             connection.Close();
+            Console.WriteLine("-------------------------\n");
+            foreach(var data in tableData)
+            {
+                Console.WriteLine($"Id:{data.Id} - Quantity:{data.Quantity} - Date:{data.Date}\n");
+            }
+            Console.WriteLine("-------------------------\n");
+            Console.ReadKey();
         }
     }
+}
+
+public class DrinkingAcetonRecord()
+{
+    public int Id { get; set; }
+    public int Quantity { get; set; }
+    public string Date { get; set; }
 }
