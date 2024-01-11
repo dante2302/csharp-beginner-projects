@@ -44,6 +44,8 @@ class MenuHandler
                 break;
 
             case ConsoleKey.D4:
+                Console.Clear();
+                DataAcessManager.Delete();
                 break;
         }
     }
@@ -57,19 +59,20 @@ class MenuHandler
         return date;
     }
 
-    public static int getQuantityInput()
+    public static int getNumberInput(string message)
     {
-        Console.WriteLine(@"Please insert a whole number for the quantity.");
-        int quantity;
-        Int32.TryParse(Console.ReadLine(), out quantity);
-        return quantity;
+        Console.WriteLine(message);
+        int number;
+        int.TryParse(Console.ReadLine(), out number);
+        return number;
     }
 }
 class DataAcessManager()
 {
+
+    internal static string connectionString = @"Data Source=habit-logger.db";
     internal static void ExecuteNonQueryCommand(string command)
     {
-        string connectionString = @"Data Source=habit-logger.db";
         using (var connection = new SqliteConnection(connectionString))
         {
             connection.Open();
@@ -84,7 +87,7 @@ class DataAcessManager()
     public static void InitialSetup()
     {
         ExecuteNonQueryCommand(
-            @"CREATE TABLE IF NOT EXISTS drinking_aceton(
+            @"CREATE TABLE IF NOT EXISTS drinking_water(
                 Id INTEGER PRIMARY KEY AUTOINCREMENT,
                 Quantity INTEGER,
                 Date TEXT
@@ -94,9 +97,9 @@ class DataAcessManager()
     public static void Insert()
     {
         string date = MenuHandler.getDateInput();
-        int quantity = MenuHandler.getQuantityInput();
+        int quantity = MenuHandler.getNumberInput("Please enter a whole number for quantity.");
         ExecuteNonQueryCommand(
-            $"INSERT INTO drinking_aceton(date, quantity) VALUES('{date}', {quantity})"
+            $"INSERT INTO drinking_water(date, quantity) VALUES('{date}', {quantity})"
         );
         Console.ReadKey();
         MenuHandler.MainMenu();
@@ -104,21 +107,20 @@ class DataAcessManager()
 
     public static void GetAll()
     {
-        string connectionString = @"Data Source=habit-logger.db";
         using (var connection = new SqliteConnection(connectionString))
         {
             connection.Open();
             var tableCmd = connection.CreateCommand();
-            tableCmd.CommandText = $"SELECT * FROM drinking_aceton ";
+            tableCmd.CommandText = $"SELECT * FROM drinking_water ";
 
-            List<DrinkingAcetonRecord> tableData = new();
+            List<DrinkingWaterRecord> tableData = new();
             SqliteDataReader reader = tableCmd.ExecuteReader();
             if (reader.HasRows)
             {
                 while (reader.Read())
                 {
                     tableData.Add(
-                        new DrinkingAcetonRecord
+                        new DrinkingWaterRecord 
                         {
                             Id = reader.GetInt32(0),
                             Quantity = reader.GetInt32(1),
@@ -129,7 +131,7 @@ class DataAcessManager()
             }
             else
             {
-                Console.WriteLine("No rows found.");
+                Console.WriteLine("No records found.");
             }
             connection.Close();
             Console.WriteLine("-------------------------\n");
@@ -138,12 +140,35 @@ class DataAcessManager()
                 Console.WriteLine($"Id:{data.Id} - Quantity:{data.Quantity} - Date:{data.Date}\n");
             }
             Console.WriteLine("-------------------------\n");
+            Console.WriteLine("Press any key to go back to the main menu.");
             Console.ReadKey();
+            MenuHandler.MainMenu();
         }
+    }
+    public static void Delete()
+    {
+        int recordId = MenuHandler.getNumberInput("Please enter the Id of the record you want to delete: ");
+        using (var connection = new SqliteConnection(connectionString))
+        {
+            connection.Open();
+            var tableCmd = connection.CreateCommand();
+            tableCmd.CommandText = $"DELETE from drinking_water WHERE Id = '{recordId}'";
+            int affectedRowCount = tableCmd.ExecuteNonQuery();
+            if (affectedRowCount == 0)
+            {
+                Console.WriteLine("Record was not found");
+                Delete();
+            }
+            connection.Close();
+        };
+        Console.WriteLine($"Record with the Id {recordId} was deleted.");
+        Console.WriteLine("Press any key to go back to the main menu");
+        Console.ReadKey();
+        MenuHandler.MainMenu();
     }
 }
 
-public class DrinkingAcetonRecord()
+public class DrinkingWaterRecord
 {
     public int Id { get; set; }
     public int Quantity { get; set; }
