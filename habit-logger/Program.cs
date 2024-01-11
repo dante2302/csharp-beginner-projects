@@ -46,6 +46,8 @@ class MenuHandler
                 break;
 
             case ConsoleKey.D3:
+                Console.Clear();
+                DataAcessManager.Update();
                 break;
 
             case ConsoleKey.D4:
@@ -164,6 +166,39 @@ class DataAcessManager()
             connection.Close();
         };
         Console.WriteLine($"Record with the Id {recordId} was deleted.");
+        MenuHandler.BackToMainMenu();
+    }
+    public static void Update()
+    {
+        int recordId = MenuHandler.getNumberInput("Please enter the Id of the record you want to update:");
+        using (var connection = new SqliteConnection(connectionString))
+        {
+            connection.Open();
+
+            var checkCmd = connection.CreateCommand();
+            checkCmd.CommandText = $"SELECT EXISTS(SELECT 1 FROM drinking_water WHERE Id = {recordId})";
+            int checkQuery = Convert.ToInt32(checkCmd.ExecuteScalar());
+
+            if(checkQuery == 0)
+            {
+                Console.WriteLine("No such record");
+                Update();
+            }
+
+            string date = MenuHandler.getDateInput();
+            int quantity = MenuHandler.getNumberInput("Please enter new quantity:");
+
+            var tableCmd = connection.CreateCommand();
+            tableCmd.CommandText = $"UPDATE drinking_water SET Date = '{date}', Quantity = {quantity} WHERE Id = {recordId}";
+            int affectedRowCount = tableCmd.ExecuteNonQuery();
+            if(affectedRowCount == 0)
+            {
+                Console.WriteLine("No such record.");
+                MenuHandler.BackToMainMenu();
+            }
+            connection.Close();
+        };
+        Console.WriteLine($"Record with the Id {recordId} was updated.");
         MenuHandler.BackToMainMenu();
     }
 }
