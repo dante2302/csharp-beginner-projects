@@ -18,7 +18,12 @@ class MenuHandler
         Console.WriteLine("3 - Update record");
         Console.WriteLine("4 - Delete record\n");
     }
-
+    public static void BackToMainMenu()
+    {
+        Console.WriteLine("Press any key to go back to the main menu.");
+        Console.ReadKey();
+        MenuHandler.MainMenu();
+    }
     public static void MainMenu()
     {
         PrintMenu();
@@ -101,8 +106,7 @@ class DataAcessManager()
         ExecuteNonQueryCommand(
             $"INSERT INTO drinking_water(date, quantity) VALUES('{date}', {quantity})"
         );
-        Console.ReadKey();
-        MenuHandler.MainMenu();
+        MenuHandler.BackToMainMenu();
     }
 
     public static void GetAll()
@@ -140,9 +144,7 @@ class DataAcessManager()
                 Console.WriteLine($"Id:{data.Id} - Quantity:{data.Quantity} - Date:{data.Date}\n");
             }
             Console.WriteLine("-------------------------\n");
-            Console.WriteLine("Press any key to go back to the main menu.");
-            Console.ReadKey();
-            MenuHandler.MainMenu();
+            MenuHandler.BackToMainMenu();
         }
     }
     public static void Delete()
@@ -162,9 +164,7 @@ class DataAcessManager()
             connection.Close();
         };
         Console.WriteLine($"Record with the Id {recordId} was deleted.");
-        Console.WriteLine("Press any key to go back to the main menu");
-        Console.ReadKey();
-        MenuHandler.MainMenu();
+        MenuHandler.BackToMainMenu();
     }
 }
 
