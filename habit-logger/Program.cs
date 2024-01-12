@@ -54,12 +54,16 @@ class MenuHandler
                 Console.Clear();
                 DataAcessManager.Delete();
                 break;
+            default:
+                Console.WriteLine("Invalid Command.");
+                Console.WriteLine("Press a number from 0 to 4");
+                break;
         }
     }
 
     public static string getDateInput()
     {
-        Console.WriteLine(@"Please insert a date(format : dd/mm/yy). Type 0 to return to the main menu");
+        Console.WriteLine(@"Please insert a date(format : dd/mm/yyyy). Type 0 to return to the main menu");
         string date = Console.ReadLine();
         if (date == "0")
             MenuHandler.MainMenu();
@@ -126,11 +130,11 @@ class DataAcessManager()
                 while (reader.Read())
                 {
                     tableData.Add(
-                        new DrinkingWaterRecord 
+                        new DrinkingWaterRecord
                         {
                             Id = reader.GetInt32(0),
                             Quantity = reader.GetInt32(1),
-                            Date = reader.GetString(2)
+                            Date = DateTime.ParseExact(reader.GetString(2), "dd/MM/yyyy", new CultureInfo("fr-FR"))
                         }
                     );
                 }
@@ -207,5 +211,5 @@ public class DrinkingWaterRecord
 {
     public int Id { get; set; }
     public int Quantity { get; set; }
-    public string Date { get; set; }
+    public DateTime Date { get; set; }
 }
