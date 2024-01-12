@@ -54,25 +54,65 @@ class MenuHandler
                 Console.Clear();
                 DataAcessManager.Delete();
                 break;
+            default:
+                Console.WriteLine("Invalid Command.");
+                Console.WriteLine("Press a number from 0 to 4");
+                break;
         }
     }
 
-    public static string getDateInput()
+    public static string GetDateInput()
     {
-        Console.WriteLine(@"Please insert a date(format : dd/mm/yy). Type 0 to return to the main menu");
+        Console.WriteLine(@"Please insert a date(format : dd/mm/yyyy). Type 0 to return to the main menu");
         string date = Console.ReadLine();
+
         if (date == "0")
             MenuHandler.MainMenu();
+
+        if (!ValidateDateInput(date))
+            GetDateInput();
+
         return date;
     }
 
-    public static int getNumberInput(string message)
+    public static int GetNumberInput(string message)
     {
         Console.WriteLine(message);
-        int number;
-        int.TryParse(Console.ReadLine(), out number);
-        return number;
+        string numInput = Console.ReadLine();
+        int num = ValidateNumberInput(numInput);
+        if (num == -1)
+        {
+            Console.WriteLine("Invalid Number.");
+            GetNumberInput("Please provide a valid one:");
+        }
+        return num;
     }
+
+    internal static int ValidateNumberInput(string input)
+    {
+        int num;
+        bool isValid = int.TryParse(input, out num);
+        if (num < 0)
+            isValid = false;
+
+        if (!isValid)
+            return -1;
+
+        else 
+            return num;
+    }
+
+    internal static bool ValidateDateInput(string input)
+    {
+        return DateTime.TryParseExact(
+            input, 
+            "dd/MM/yyyy", 
+            new CultureInfo("fr-FR"), 
+            DateTimeStyles.None,
+            out _
+        );
+    }
+
 }
 class DataAcessManager()
 {
@@ -103,8 +143,8 @@ class DataAcessManager()
     }
     public static void Insert()
     {
-        string date = MenuHandler.getDateInput();
-        int quantity = MenuHandler.getNumberInput("Please enter a whole number for quantity.");
+        string date = MenuHandler.GetDateInput();
+        int quantity = MenuHandler.GetNumberInput("Please enter a whole number for quantity.");
         ExecuteNonQueryCommand(
             $"INSERT INTO drinking_water(date, quantity) VALUES('{date}', {quantity})"
         );
@@ -126,11 +166,11 @@ class DataAcessManager()
                 while (reader.Read())
                 {
                     tableData.Add(
-                        new DrinkingWaterRecord 
+                        new DrinkingWaterRecord
                         {
                             Id = reader.GetInt32(0),
                             Quantity = reader.GetInt32(1),
-                            Date = reader.GetString(2)
+                            Date = DateTime.ParseExact(reader.GetString(2), "dd/MM/yyyy", new CultureInfo("fr-FR"))
                         }
                     );
                 }
@@ -151,7 +191,8 @@ class DataAcessManager()
     }
     public static void Delete()
     {
-        int recordId = MenuHandler.getNumberInput("Please enter the Id of the record you want to delete: ");
+        int recordId = MenuHandler.GetNumberInput("Please enter the Id of the record you want to delete: ");
+        if (recordId == 0) MenuHandler.BackToMainMenu();
         using (var connection = new SqliteConnection(connectionString))
         {
             connection.Open();
@@ -170,7 +211,7 @@ class DataAcessManager()
     }
     public static void Update()
     {
-        int recordId = MenuHandler.getNumberInput("Please enter the Id of the record you want to update:");
+        int recordId = MenuHandler.GetNumberInput("Please enter the Id of the record you want to update:");
         using (var connection = new SqliteConnection(connectionString))
         {
             connection.Open();
@@ -185,8 +226,8 @@ class DataAcessManager()
                 Update();
             }
 
-            string date = MenuHandler.getDateInput();
-            int quantity = MenuHandler.getNumberInput("Please enter new quantity:");
+            string date = MenuHandler.GetDateInput();
+            int quantity = MenuHandler.GetNumberInput("Please enter new quantity:");
 
             var tableCmd = connection.CreateCommand();
             tableCmd.CommandText = $"UPDATE drinking_water SET Date = '{date}', Quantity = {quantity} WHERE Id = {recordId}";
@@ -207,5 +248,5 @@ public class DrinkingWaterRecord
 {
     public int Id { get; set; }
     public int Quantity { get; set; }
-    public string Date { get; set; }
+    public DateTime Date { get; set; }
 }
