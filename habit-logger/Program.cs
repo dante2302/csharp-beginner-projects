@@ -65,8 +65,13 @@ class MenuHandler
     {
         Console.WriteLine(@"Please insert a date(format : dd/mm/yyyy). Type 0 to return to the main menu");
         string date = Console.ReadLine();
+
         if (date == "0")
             MenuHandler.MainMenu();
+
+        if (!ValidateDateInput(date))
+            GetDateInput();
+
         return date;
     }
 
@@ -87,7 +92,6 @@ class MenuHandler
     {
         int num;
         bool isValid = int.TryParse(input, out num);
-        Console.WriteLine(num);
         if (num < 0)
             isValid = false;
 
@@ -96,6 +100,17 @@ class MenuHandler
 
         else 
             return num;
+    }
+
+    internal static bool ValidateDateInput(string input)
+    {
+        return DateTime.TryParseExact(
+            input, 
+            "dd/MM/yyyy", 
+            new CultureInfo("fr-FR"), 
+            DateTimeStyles.None,
+            out _
+        );
     }
 
 }
@@ -177,6 +192,7 @@ class DataAcessManager()
     public static void Delete()
     {
         int recordId = MenuHandler.GetNumberInput("Please enter the Id of the record you want to delete: ");
+        if (recordId == 0) MenuHandler.BackToMainMenu();
         using (var connection = new SqliteConnection(connectionString))
         {
             connection.Open();
