@@ -61,7 +61,7 @@ class MenuHandler
         }
     }
 
-    public static string getDateInput()
+    public static string GetDateInput()
     {
         Console.WriteLine(@"Please insert a date(format : dd/mm/yyyy). Type 0 to return to the main menu");
         string date = Console.ReadLine();
@@ -70,13 +70,34 @@ class MenuHandler
         return date;
     }
 
-    public static int getNumberInput(string message)
+    public static int GetNumberInput(string message)
     {
         Console.WriteLine(message);
-        int number;
-        int.TryParse(Console.ReadLine(), out number);
-        return number;
+        string numInput = Console.ReadLine();
+        int num = ValidateNumberInput(numInput);
+        if (num == -1)
+        {
+            Console.WriteLine("Invalid Number.");
+            GetNumberInput("Please provide a valid one:");
+        }
+        return num;
     }
+
+    internal static int ValidateNumberInput(string input)
+    {
+        int num;
+        bool isValid = int.TryParse(input, out num);
+        Console.WriteLine(num);
+        if (num < 0)
+            isValid = false;
+
+        if (!isValid)
+            return -1;
+
+        else 
+            return num;
+    }
+
 }
 class DataAcessManager()
 {
@@ -107,8 +128,8 @@ class DataAcessManager()
     }
     public static void Insert()
     {
-        string date = MenuHandler.getDateInput();
-        int quantity = MenuHandler.getNumberInput("Please enter a whole number for quantity.");
+        string date = MenuHandler.GetDateInput();
+        int quantity = MenuHandler.GetNumberInput("Please enter a whole number for quantity.");
         ExecuteNonQueryCommand(
             $"INSERT INTO drinking_water(date, quantity) VALUES('{date}', {quantity})"
         );
@@ -155,7 +176,7 @@ class DataAcessManager()
     }
     public static void Delete()
     {
-        int recordId = MenuHandler.getNumberInput("Please enter the Id of the record you want to delete: ");
+        int recordId = MenuHandler.GetNumberInput("Please enter the Id of the record you want to delete: ");
         using (var connection = new SqliteConnection(connectionString))
         {
             connection.Open();
@@ -174,7 +195,7 @@ class DataAcessManager()
     }
     public static void Update()
     {
-        int recordId = MenuHandler.getNumberInput("Please enter the Id of the record you want to update:");
+        int recordId = MenuHandler.GetNumberInput("Please enter the Id of the record you want to update:");
         using (var connection = new SqliteConnection(connectionString))
         {
             connection.Open();
@@ -189,8 +210,8 @@ class DataAcessManager()
                 Update();
             }
 
-            string date = MenuHandler.getDateInput();
-            int quantity = MenuHandler.getNumberInput("Please enter new quantity:");
+            string date = MenuHandler.GetDateInput();
+            int quantity = MenuHandler.GetNumberInput("Please enter new quantity:");
 
             var tableCmd = connection.CreateCommand();
             tableCmd.CommandText = $"UPDATE drinking_water SET Date = '{date}', Quantity = {quantity} WHERE Id = {recordId}";
