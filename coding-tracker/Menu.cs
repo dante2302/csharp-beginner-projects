@@ -1,5 +1,7 @@
-﻿using Database;
+﻿using ConsoleTableExt;
+using Database;
 using Spectre.Console;
+using System.Reflection;
 
 namespace Menu 
 {
@@ -22,7 +24,6 @@ namespace Menu
         {
             PrintMenu();
             var option = AnsiConsole.Ask<int>("[grey]Choose an option: [/]");
-            Console.WriteLine(option);
             switch(option)
             {
                 case 0: 
@@ -32,6 +33,7 @@ namespace Menu
                     DataAcessManager.Create();
                     break;
                 case 2:
+                    TableVisualizer.PrintRecords(DataAcessManager.ReadAll());
                     break;
                 case 3:
                     break;
@@ -39,7 +41,7 @@ namespace Menu
                     break;
             }
         }
-    }
+          }
 
     public static class InputHandler
     {
@@ -59,6 +61,16 @@ namespace Menu
                 .ValidationErrorMessage("[red]Invalid time![/]")
                 );
             return answer;
+        }
+    }
+    public static class TableVisualizer 
+    {
+        public static void PrintRecords<T>(List<T> recordList) where T : Record
+        {
+            ConsoleTableBuilder
+                .From(recordList)
+                .WithTitle("coding")
+                .ExportAndWriteLine();
         }
     }
 }
