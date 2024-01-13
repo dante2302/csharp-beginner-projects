@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "coding-tracker": {
+      "commandName": "Project",
+      "workingDirectory": "C:\\Users\\Dante\\Desktop\\csharp-console-projects\\coding-tracker",
+      "hotReloadEnabled": false
+    }
+  }
+}
