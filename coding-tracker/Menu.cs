@@ -1,10 +1,11 @@
-﻿using Spectre.Console;
+﻿using Database;
+using Spectre.Console;
 
 namespace Menu 
 {
-    static class MenuHandler
+    public static class MenuHandler
     {
-        public static void PrintMenu()
+        static void PrintMenu()
         {
             var panel = new Panel(
                 "0 - Close the application \n" +
@@ -22,6 +23,42 @@ namespace Menu
             PrintMenu();
             var option = AnsiConsole.Ask<int>("[grey]Choose an option: [/]");
             Console.WriteLine(option);
+            switch(option)
+            {
+                case 0: 
+                    Environment.Exit(0);
+                    break;
+                case 1:
+                    DataAcessManager.Create();
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+            }
+        }
+    }
+
+    public static class InputHandler
+    {
+        public static string GetDateInput(string message)
+        {
+            string answer = AnsiConsole.Prompt<string>(
+                new TextPrompt<string>(message)
+                .ValidationErrorMessage("[red]Invalid date![/] Please input a valid date in the following format: [yellow]dd/MM/yyyy[/]")
+                );
+            return answer;
+        }
+
+        public static string GetTimeInput(string message)
+        {
+            string answer = AnsiConsole.Prompt<string>(
+                new TextPrompt<string>(message)
+                .ValidationErrorMessage("[red]Invalid time![/]")
+                );
+            return answer;
         }
     }
 }

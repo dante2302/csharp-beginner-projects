@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.Sqlite;
+using Menu;
 
 namespace Database 
 {
@@ -28,14 +29,14 @@ namespace Database
                 );"
             );
         }
-
-        public static void getDateInput()
+        
+        public static void Create()
         {
-
-        }
-        public static void getTimeInput()
-        {
-
+            string dateInput = InputHandler.GetDateInput("Please enter a date in the following format: [yellow]dd/MM/yyyy[/]");
+            string timeInput = InputHandler.GetTimeInput("Please enter a valid time: ");
+            ExecuteNonQueryCommand(
+                @$"INSERT INTO coding(date, duration) VALUES('{dateInput}', '{timeInput}')"
+            );
         }
     } 
 }
