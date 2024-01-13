@@ -25,7 +25,8 @@ namespace Database
                 @"CREATE TABLE IF NOT EXISTS coding(
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     date TEXT,
-                    duration TEXT
+                    startTime TEXT,
+                    endTime TEXT
                 );"
             );
         }
@@ -33,9 +34,10 @@ namespace Database
         public static void Create()
         {
             string dateInput = InputHandler.GetDateInput("Please enter a date in the following format: [yellow]dd/MM/yyyy[/]");
-            string timeInput = InputHandler.GetTimeInput("Please enter a valid time: ");
+            string startTimeInput = InputHandler.GetTimeInput("Please enter a valid time: hh:mm");
+            string endTimeInput = InputHandler.GetTimeInput("Enter an end time in the following format: hh:mm");
             ExecuteNonQueryCommand(
-                @$"INSERT INTO coding(date, duration) VALUES('{dateInput}', '{timeInput}')"
+                @$"INSERT INTO coding(date, startTime, endTime) VALUES('{dateInput}', '{startTimeInput}', '{endTimeInput}')"
             );
         }
 
@@ -55,7 +57,8 @@ namespace Database
                         {
                             Id = reader.GetInt32(0),
                             Date = reader.GetString(1),
-                            Time = reader.GetString(2)
+                            StartTime = reader.GetString(2),
+                            EndTime = reader.GetString(3)
                         }
                     );
                 }
@@ -68,6 +71,8 @@ namespace Database
     {
         public int Id { get; set; }
         public string Date { get; set; }
-        public string Time { get; set; }
+        public string StartTime { get; set; }
+        
+        public string EndTime { get; set; }
     }
 }

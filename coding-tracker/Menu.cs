@@ -1,28 +1,13 @@
-﻿using ConsoleTableExt;
-using Database;
-using Spectre.Console;
-using System.Reflection;
+﻿using Database;
+using Visualization;
 
 namespace Menu 
 {
     public static class MenuHandler
     {
-        static void PrintMenu()
-        {
-            var panel = new Panel(
-                "0 - Close the application \n" +
-                "1 - Create a record \n" +
-                "2 - Read all records \n" +
-                "3 - Update a record \n" +
-                "4 - Delete a record \n"
-            );
-
-            panel.Header = new PanelHeader("MAIN MENU").Centered();
-            AnsiConsole.Write(panel);
-        }
         public static void MainMenu()
         {
-            PrintMenu();
+            Visualizer.PrintMenu();
             var option = AnsiConsole.Ask<int>("[grey]Choose an option: [/]");
             switch(option)
             {
@@ -33,7 +18,7 @@ namespace Menu
                     DataAcessManager.Create();
                     break;
                 case 2:
-                    TableVisualizer.PrintRecords(DataAcessManager.ReadAll());
+                    Visualizer.PrintRecords(DataAcessManager.ReadAll());
                     break;
                 case 3:
                     break;
@@ -61,16 +46,6 @@ namespace Menu
                 .ValidationErrorMessage("[red]Invalid time![/]")
                 );
             return answer;
-        }
-    }
-    public static class TableVisualizer 
-    {
-        public static void PrintRecords<T>(List<T> recordList) where T : Record
-        {
-            ConsoleTableBuilder
-                .From(recordList)
-                .WithTitle("coding")
-                .ExportAndWriteLine();
         }
     }
 }
