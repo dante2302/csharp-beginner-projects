@@ -56,9 +56,9 @@ namespace Database
                         new Record
                         {
                             Id = reader.GetInt32(0),
-                            Date = reader.GetString(1),
-                            StartTime = reader.GetString(2),
-                            EndTime = reader.GetString(3)
+                            Date = DateTime.ParseExact(reader.GetString(1), "dd/MM/yyyy", null),
+                            StartTime = DateTime.ParseExact(reader.GetString(2), "HH:mm", null),
+                            EndTime = DateTime.ParseExact(reader.GetString(3), "HH:mm", null)
                         }
                     );
                 }
@@ -70,9 +70,9 @@ namespace Database
     public class Record
     {
         public int Id { get; set; }
-        public string Date { get; set; }
-        public string StartTime { get; set; }
+        public DateTime Date { get; set; }
+        public DateTime StartTime { get; set; }
         
-        public string EndTime { get; set; }
+        public DateTime EndTime { get; set; }
     }
 }
