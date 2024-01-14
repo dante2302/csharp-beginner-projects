@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
 using Menu;
+using System.Data;
 
 namespace Database
 {
@@ -64,6 +65,42 @@ namespace Database
                 }
                 connection.Close();
                 return tableRecords;
+            }
+        }
+        
+        public static bool RecordExists(int id)
+        {
+            using (var connection = new SqliteConnection(connectionString))
+            {
+                connection.Open();
+                var tableCmd = connection.CreateCommand();
+                tableCmd.CommandText = $"SELECT * FROM coding WHERE id = {id}";
+                var reader = tableCmd.ExecuteReader();
+                bool exists = false;
+                reader.Read();
+                
+                connection.Close();
+                return exists;
+            }
+        }
+        public static void Delete()
+        {
+            int id;
+            int.TryParse(AnsiConsole.Ask<string>("Type the Id of the record you want to delete: "), out id);
+            using (var connection = new SqliteConnection(connectionString))
+            {
+                connection.Open();
+
+                while (!RecordExists(id))
+                {
+                    Console.WriteLine("No Such Record Exists. Type the correct id or type 0 to exit.");
+                    int.TryParse(Console.ReadLine(), out id);
+                }
+
+                var tableCmd = connection.CreateCommand();
+                tableCmd.CommandText = $"DELETE FROM coding WHERE id = {id}";
+                tableCmd.ExecuteNonQuery();
+                connection.Close();
             }
         }
     }
