@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.Sqlite;
 using Menu;
 using System.Data;
+using Visualization;
 
 namespace Database
 {
@@ -32,7 +33,7 @@ namespace Database
             );
         }
 
-        public static void Create()
+        public static void CreateRecord()
         {
             string dateInput = InputHandler.GetDateInput("Please enter a date in the following format: [yellow]dd/MM/yyyy[/]");
             string startTimeInput = InputHandler.GetTimeInput("Please enter a valid time: hh:mm");
@@ -67,33 +68,17 @@ namespace Database
                 return tableRecords;
             }
         }
-        
-        public static bool RecordExists(int id)
-        {
-            using (var connection = new SqliteConnection(connectionString))
-            {
-                connection.Open();
-                var tableCmd = connection.CreateCommand();
-                tableCmd.CommandText = $"SELECT * FROM coding WHERE id = {id}";
-                var reader = tableCmd.ExecuteReader();
-                bool exists = false;
-                reader.Read();
-                
-                connection.Close();
-                return exists;
-            }
-        }
+         
         public static void Delete()
         {
-            int id;
-            int.TryParse(AnsiConsole.Ask<string>("Type the Id of the record you want to delete: "), out id);
+            int id = InputHandler.GetId("Type the Id of the record you want to delete: ");
             using (var connection = new SqliteConnection(connectionString))
             {
                 connection.Open();
 
                 while (!RecordExists(id))
                 {
-                    Console.WriteLine("No Such Record Exists. Type the correct id or type 0 to exit.");
+                    Console.WriteLine("No Such Record Exists.\n Type the correct id or type 0 to exit.");
                     int.TryParse(Console.ReadLine(), out id);
                 }
 
@@ -103,6 +88,65 @@ namespace Database
                 connection.Close();
             }
         }
+
+        public static void Update()
+        {
+            Console.Clear();
+            int id = InputHandler.GetId("Type the Id of the record you want to update: ");
+            while (!RecordExists(id))
+            {
+                Console.Clear();
+                id = InputHandler.GetId("Id of the record doesn't exist!\nPlease provide a new one, or type 0 to return to the main menu: ");
+                if (id == 0)
+                    MenuHandler.MainMenu();
+            }
+
+            string updateKey = "";
+            string updateValue = "";
+
+            Visualizer.PrintUpdateMenu();
+            string option = Console.ReadLine();
+
+            switch (option) 
+            {
+                case "d":
+                    updateKey = "date";
+                    updateValue = InputHandler.GetDateInput("asd");
+                    break;
+
+                case "st":
+                    updateKey = "startTime";
+                    updateValue = InputHandler.GetTimeInput("asd");
+                    break;
+
+                case "et": 
+                    updateKey = "endTime";
+                    updateValue = InputHandler.GetTimeInput("asd");
+                    break;
+
+                case "0":
+                    MenuHandler.MainMenu();
+                    break;
+
+                default:
+                    break;
+            }
+            Console.WriteLine(updateKey + updateValue);
+        }
+        public static bool RecordExists(int id)
+        {
+            using (var connection = new SqliteConnection(connectionString))
+            {
+                connection.Open();
+                var tableCmd = connection.CreateCommand();
+                tableCmd.CommandText = $"SELECT * FROM coding WHERE id = {id}";
+                var reader = tableCmd.ExecuteReader();
+                bool exists = reader.HasRows;
+                connection.Close();
+                return exists;
+            }
+        }
+
     }
     public class Record
     {

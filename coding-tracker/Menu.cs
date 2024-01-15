@@ -7,7 +7,7 @@ namespace Menu
     {
         public static void MainMenu()
         {
-            Visualizer.PrintMenu();
+            Visualizer.PrintMainMenu();
             var option = AnsiConsole.Ask<int>("[grey]Choose an option: [/]");
             switch(option)
             {
@@ -15,18 +15,19 @@ namespace Menu
                     Environment.Exit(0);
                     break;
                 case 1:
-                    DataAcessManager.Create();
+                    DataAcessManager.CreateRecord();
                     break;
                 case 2:
                     Visualizer.PrintRecords(DataAcessManager.ReadAll());
                     break;
                 case 3:
+                    DataAcessManager.Update();
                     break;
                 case 4:
                     break;
             }
         }
-          }
+    }
 
     public static class InputHandler
     {
@@ -46,6 +47,13 @@ namespace Menu
                 .ValidationErrorMessage("[red]Invalid time![/]")
                 );
             return answer;
+        }
+
+        public static int GetId(string message)
+        {
+            int id;
+            int.TryParse(AnsiConsole.Ask<string>(message), out id);
+            return id;
         }
     }
 }
