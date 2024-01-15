@@ -169,5 +169,11 @@ namespace Database
         public TimeOnly StartTime { get; set; }
         
         public TimeOnly EndTime { get; set; }
+        public TimeSpan Duration => CalculateDuration();
+        public TimeSpan CalculateDuration()
+        {
+            TimeSpan Duration = EndTime - StartTime;
+            return Duration;
+        }
     }
 }

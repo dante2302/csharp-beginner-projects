@@ -1,4 +1,5 @@
 ﻿using Database;
+using Spectre.Console;
 
 namespace Visualization
 {
@@ -38,7 +39,8 @@ namespace Visualization
             ConsoleTableBuilder
                 .From(recordList)
                 .WithTitle("coding")
-                .ExportAndWriteLine();
+                .ExportAndWriteLine()
+                ;
         }
 
     }
