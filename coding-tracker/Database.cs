@@ -58,9 +58,10 @@ namespace Database
                         new Record
                         {
                             Id = reader.GetInt32(0),
-                            Date = DateTime.ParseExact(reader.GetString(1), "dd/MM/yyyy", null),
-                            StartTime = DateTime.ParseExact(reader.GetString(2), "HH:mm", null),
-                            EndTime = DateTime.ParseExact(reader.GetString(3), "HH:mm", null)
+                            
+                            Date =  DateOnly.FromDateTime(DateTime.ParseExact(reader.GetString(1), "dd/MM/yyyy", null)),
+                            StartTime = TimeOnly.FromDateTime(DateTime.ParseExact(reader.GetString(2), "HH:mm", null)),
+                            EndTime = TimeOnly.FromDateTime(DateTime.ParseExact(reader.GetString(3), "HH:mm", null))
                         }
                     );
                 }
@@ -131,7 +132,16 @@ namespace Database
                 default:
                     break;
             }
-            Console.WriteLine(updateKey + updateValue);
+
+            ExecuteNonQueryCommand(
+            @$"UPDATE coding
+               SET '{updateKey}' = '{updateValue}'
+               WHERE id = {id}"
+            );
+            Console.WriteLine("Record was updated!");
+            Console.WriteLine("Type anything to go back to the main menu.");
+            Console.ReadLine();
+            MenuHandler.MainMenu();
         }
         public static bool RecordExists(int id)
         {
@@ -151,9 +161,9 @@ namespace Database
     public class Record
     {
         public int Id { get; set; }
-        public DateTime Date { get; set; }
-        public DateTime StartTime { get; set; }
+        public DateOnly Date { get; set; }
+        public TimeOnly StartTime { get; set; }
         
-        public DateTime EndTime { get; set; }
+        public TimeOnly EndTime { get; set; }
     }
 }
