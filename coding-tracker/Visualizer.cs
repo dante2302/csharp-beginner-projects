@@ -44,5 +44,15 @@ namespace Visualization
         }
 
     }
-
+    public static class Messages
+    {
+        public static string InvalidId = "Id of the record doesn't exist!\nPlease provide a new one, or type 0 to return to the main menu: ";
+        public static string DateInput = "Please enter a date in the following format: [yellow]dd/MM/yyyy[/]";
+        public static string StartTimeInput = "Please enter a start time in the following format: hh:mm";
+        public static string EndTimeInput = "Please enter a start time in the following format: hh:mm";
+        public static string DurationError = "Starting time needs to be before the ending time";
+        public static string RecordChange = "Type the Id of the record you want to";
+        public static string BackToMainMenu = "Type anything to go back to the main menu.";
+        public static string RecordChangeSuccess = "Record was";
+    }
 }

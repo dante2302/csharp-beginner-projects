@@ -34,7 +34,6 @@ namespace Menu
     {
         public static string GetDateInput(string message)
         {
-            Console.Clear();
             string answer = AnsiConsole.Prompt<string>(
                 new TextPrompt<string>(message)
                 .ValidationErrorMessage("[red]Invalid date![/]")
@@ -45,7 +44,6 @@ namespace Menu
 
         public static string GetTimeInput(string message)
         {
-            Console.Clear();
             string answer = AnsiConsole.Prompt<string>(
                 new TextPrompt<string>(message)
                 .ValidationErrorMessage("[red]Invalid time![/]")

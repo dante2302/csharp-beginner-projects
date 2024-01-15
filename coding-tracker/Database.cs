@@ -35,11 +35,21 @@ namespace Database
 
         public static void CreateRecord()
         {
-            string dateInput = InputHandler.GetDateInput("Please enter a date in the following format: [yellow]dd/MM/yyyy[/]");
-            string startTimeInput = InputHandler.GetTimeInput("Please enter a valid time: hh:mm");
-            string endTimeInput = InputHandler.GetTimeInput("Enter an end time in the following format: hh:mm");
+            Console.Clear();
+            string dateInput = InputHandler.GetDateInput(Messages.DateInput);
+            string startTimeInput = InputHandler.GetTimeInput(Messages.StartTimeInput);
+            string endTimeInput = InputHandler.GetTimeInput(Messages.EndTimeInput);
+
+            while(!isValidDuration(startTimeInput, endTimeInput))
+            {
+                Console.WriteLine(Messages.DurationError);
+                startTimeInput = InputHandler.GetTimeInput("");
+                endTimeInput = InputHandler.GetTimeInput("");
+            }
+
             ExecuteNonQueryCommand(
-                @$"INSERT INTO coding(date, startTime, endTime) VALUES('{dateInput}', '{startTimeInput}', '{endTimeInput}')"
+                @$"INSERT INTO coding(date, startTime, endTime) 
+                   VALUES('{dateInput}', '{startTimeInput}', '{endTimeInput}')"
             );
         }
 
@@ -72,14 +82,14 @@ namespace Database
          
         public static void Delete()
         {
-            int id = InputHandler.GetId("Type the Id of the record you want to delete: ");
+            int id = InputHandler.GetId($"{Messages.RecordChange} delete: ");
             using (var connection = new SqliteConnection(connectionString))
             {
                 connection.Open();
 
                 while (!RecordExists(id))
                 {
-                    Console.WriteLine("No Such Record Exists.\n Type the correct id or type 0 to exit.");
+                    Console.WriteLine();
                     int.TryParse(Console.ReadLine(), out id);
                 }
 
@@ -88,8 +98,8 @@ namespace Database
                 tableCmd.ExecuteNonQuery();
                 connection.Close();
             }
-            Console.WriteLine("Record was deleted!");
-            Console.WriteLine("Type anything to go back to the main menu.");
+            Console.WriteLine($"{Messages.RecordChangeSuccess}deleted!");
+            Console.WriteLine(Messages.BackToMainMenu);
             Console.ReadLine();
             MenuHandler.MainMenu();
         }
@@ -97,11 +107,12 @@ namespace Database
         public static void Update()
         {
             Console.Clear();
-            int id = InputHandler.GetId("Type the Id of the record you want to update: ");
+            int id = InputHandler.GetId($"{Messages.RecordChange} update: ");
+
             while (!RecordExists(id))
             {
                 Console.Clear();
-                id = InputHandler.GetId("Id of the record doesn't exist!\nPlease provide a new one, or type 0 to return to the main menu: ");
+                id = InputHandler.GetId(Messages.InvalidId);
                 if (id == 0)
                     MenuHandler.MainMenu();
             }
@@ -142,8 +153,8 @@ namespace Database
                SET '{updateKey}' = '{updateValue}'
                WHERE id = {id}"
             );
-            Console.WriteLine("Record was updated!");
-            Console.WriteLine("Type anything to go back to the main menu.");
+            Console.WriteLine($"{Messages.RecordChangeSuccess} updated!");
+            Console.WriteLine(Messages.BackToMainMenu);
             Console.ReadLine();
             MenuHandler.MainMenu();
         }
@@ -159,6 +170,12 @@ namespace Database
                 connection.Close();
                 return exists;
             }
+        }
+        public static bool isValidDuration(string startTimeInput, string endTimeInput)
+        {
+            TimeOnly startTime = TimeOnly.ParseExact(startTimeInput, "HH:mm", null);
+            TimeOnly endTime = TimeOnly.ParseExact(endTimeInput, "HH:mm", null);
+            return startTime < endTime;
         }
 
     }
