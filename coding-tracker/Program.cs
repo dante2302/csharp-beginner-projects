@@ -1,5 +1,3 @@
-﻿using Database;
-using Menu;
-DataAccessManager.Initialize();
-MenuHandler.MainMenu();
+﻿Database.DataAccessManager.Initialize();
+Menu.MenuHandler.MainMenu();
 
