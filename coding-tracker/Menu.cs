@@ -34,19 +34,23 @@ namespace Menu
     {
         public static string GetDateInput(string message)
         {
+            Console.Clear();
             string answer = AnsiConsole.Prompt<string>(
                 new TextPrompt<string>(message)
-                .ValidationErrorMessage("[red]Invalid date![/] Please input a valid date in the following format: [yellow]dd/MM/yyyy[/]")
+                .ValidationErrorMessage("[red]Invalid date![/]")
+                .Validate(ValidateDate)
                 );
             return answer;
         }
 
         public static string GetTimeInput(string message)
         {
+            Console.Clear();
             string answer = AnsiConsole.Prompt<string>(
                 new TextPrompt<string>(message)
                 .ValidationErrorMessage("[red]Invalid time![/]")
-                .Validate(ValidateTime));
+                .Validate(ValidateTime)
+                );
             return answer;
         }
 
@@ -56,9 +60,14 @@ namespace Menu
             int.TryParse(AnsiConsole.Ask<string>(message), out id);
             return id;
         }
-        public static bool ValidateTime(string Time)
+        public static bool ValidateTime(string time)
         {
-            return TimeOnly.TryParseExact(Time, "HH:mm", out _);
+            return TimeOnly.TryParseExact(time, "HH:mm", out _);
+        }
+
+        public static bool ValidateDate(string date)
+        {
+            return DateOnly.TryParseExact(date, "dd/MM/yyyy", out _);
         }
     }
 }
