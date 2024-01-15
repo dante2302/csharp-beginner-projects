@@ -5,7 +5,7 @@ using Visualization;
 
 namespace Database
 {
-    static class DataAcessManager
+    static class DataAccessManager
     {
         static readonly string connectionString =
             ConfigurationManager.ConnectionStrings["cstring"].ConnectionString;
@@ -88,6 +88,10 @@ namespace Database
                 tableCmd.ExecuteNonQuery();
                 connection.Close();
             }
+            Console.WriteLine("Record was deleted!");
+            Console.WriteLine("Type anything to go back to the main menu.");
+            Console.ReadLine();
+            MenuHandler.MainMenu();
         }
 
         public static void Update()

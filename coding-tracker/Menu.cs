@@ -15,15 +15,16 @@ namespace Menu
                     Environment.Exit(0);
                     break;
                 case 1:
-                    DataAcessManager.CreateRecord();
+                    DataAccessManager.CreateRecord();
                     break;
                 case 2:
-                    Visualizer.PrintRecords(DataAcessManager.ReadAll());
+                    Visualizer.PrintRecords(DataAccessManager.ReadAll());
                     break;
                 case 3:
-                    DataAcessManager.Update();
+                    DataAccessManager.Update();
                     break;
                 case 4:
+                    DataAccessManager.Delete();
                     break;
             }
         }
@@ -45,7 +46,7 @@ namespace Menu
             string answer = AnsiConsole.Prompt<string>(
                 new TextPrompt<string>(message)
                 .ValidationErrorMessage("[red]Invalid time![/]")
-                );
+                .Validate(ValidateTime));
             return answer;
         }
 
@@ -54,6 +55,10 @@ namespace Menu
             int id;
             int.TryParse(AnsiConsole.Ask<string>(message), out id);
             return id;
+        }
+        public static bool ValidateTime(string Time)
+        {
+            return TimeOnly.TryParseExact(Time, "HH:mm", out _);
         }
     }
 }
