@@ -3,29 +3,57 @@ using System.Data.SqlClient;
 
 namespace DBManagement
 {
-    class DataManager 
+    internal class DBRepo 
+    { 
+        internal static readonly string connectionString = ConfigurationManager.ConnectionStrings["cstring"].ConnectionString;
+        internal static int ExecNonQueryCmd(string command)
+        {
+            int affectedRows = 0;
+            using (var connection  = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string cmdText = command;
+
+                using(var cmd = new SqlCommand(cmdText, connection))
+                {
+                    affectedRows = cmd.ExecuteNonQuery();
+                }
+                connection.Close();
+            }
+            return affectedRows;
+        }
+    }
+    class StackRepo : DBRepo
     {
-        private static readonly string connectionString = ConfigurationManager.ConnectionStrings["cstring"].ConnectionString;
+        public static void Create(string stackName)
+        {
+            ExecNonQueryCmd($"INSERT INTO Stacks(Topic) VALUES('{stackName}')");
+        }
         public static List<string> GetAllStackNames()
         {
             using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
                 string commandText =
-                    @"USE flashcards
-                      SELECT * FROM Stacks";
-                var cmd = new SqlCommand(commandText,connection);
-                using(var reader = cmd.ExecuteReader())
+                    "SELECT Topic FROM Stacks";
+                var cmd = new SqlCommand(commandText, connection);
+                using (var reader = cmd.ExecuteReader())
                 {
                     List<string> stackNameList = [];
                     while (reader.Read())
                     {
                         stackNameList.Add(
-                            reader.GetString(reader.GetOrdinal("Topic"))); 
+                            reader.GetString(0));
                     }
                     return stackNameList;
                 }
             }
-        }    
+        }
+
     }
+
+    class DataManager 
+    {
+           }
 }

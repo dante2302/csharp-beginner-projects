@@ -28,7 +28,7 @@ namespace Menu
 
         public static void StackMenu()
         {
-            List<string> stackNames = DataManager.GetAllStackNames();
+            List<string> stackNames = StackRepo.GetAllStackNames();
             string input;
             if (stackNames.Count == 0)
             {
@@ -37,6 +37,9 @@ namespace Menu
                 {
                     case "0":
                         MainMenu();
+                        break;
+                    case "1":
+                        StackRepo.Create("English");
                         break;
                 }
             }
