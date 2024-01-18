@@ -18,6 +18,10 @@
         private int Id {  get; set; }
         public string Topic {  get; set; }
     }
+    public class StackDTO
+    {
+        public string Topic { get; set; }
+    }
     public class StudySession 
     {
         int points { get; set; }

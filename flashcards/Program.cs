@@ -1,3 +1,2 @@
-﻿using Visualization;
-
-Printer.PrintMainMenu();
+﻿using Menu;
+MenuHandler.MainMenu();
