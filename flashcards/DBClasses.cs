@@ -15,7 +15,7 @@
 
     public class Stack
     {
-        private int Id {  get; set; }
+        public int Id {  get; set; }
         public string Topic {  get; set; }
     }
     public class StackDTO

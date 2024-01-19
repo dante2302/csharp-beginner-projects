@@ -1,4 +1,4 @@
-﻿
+﻿using DBClasses;
 namespace Visualization 
 {
     public class MenuPrinter 
@@ -29,14 +29,31 @@ namespace Visualization
             Console.WriteLine("View Flashcards In A Stack");
             Console.WriteLine("0 - Return To Main Menu");
         }
-        public static bool PrintStackChoice(List<string> stackNameList)
+        public static void PrintStackChoice(List<Stack> stackNameList)
         {
             Console.Clear();
-            Console.WriteLine("Choose A Working Stack: ");
-
+            Console.WriteLine("0 - Go Back To The Main Menu");
+            Console.WriteLine("1 - Create A New Stack");
+            Console.WriteLine("yourStackName - Manage The Stack");
+            Console.WriteLine("\n------------");
+            Console.WriteLine("Your Stacks:");
             for(int i = 0; i < stackNameList.Count; i++)
-                Console.WriteLine(stackNameList[i]);
-            return true;
+                Console.WriteLine(stackNameList[i]?.Topic);
+        }
+
+        public static void PrintWorkingStackMenu(string stackName) 
+        {
+            Console.WriteLine("-------------------------");
+            Console.WriteLine($"Current Working Stack: {stackName}");
+            Console.WriteLine("0 - Return To The Main Menu");
+            Console.WriteLine("G - Change The Current Working Stack");
+            Console.WriteLine("M - Manage Current Stack");
+            Console.WriteLine("V - View All Flashcards");
+            Console.WriteLine("N - View X Amount Of Flashcards");
+            Console.WriteLine("E - Edit A Flashcard");
+            Console.WriteLine("D - Delete A Flashcard");
+            Console.WriteLine("-------------------------");
+
         }
     }
 

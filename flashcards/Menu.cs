@@ -1,4 +1,5 @@
 ﻿using DBManagement;
+using DBClasses;
 using Visualization;
 
 namespace Menu
@@ -14,7 +15,7 @@ namespace Menu
                 case "S":
                     break;
                 case "MS":
-                    StackMenu();
+                    StackChoiceMenu();
                     break;
                 case "MF":
                     break;
@@ -25,27 +26,43 @@ namespace Menu
                     break;
             }
         }
-
-        public static void StackMenu()
+        public static void NoStackMenu()
         {
-            List<string> stackNames = StackRepo.GetAllStackNames();
-            string input;
-            if (stackNames.Count == 0)
+            string input = InputHandler.NoStacksInput();
+            switch (input)
             {
-                input = InputHandler.NoStacksInput();
-                switch (input) 
-                {
-                    case "0":
-                        MainMenu();
-                        break;
-                    case "1":
-                        StackRepo.Create("English");
-                        break;
-                }
+                case "0":
+                    MainMenu();
+                    break;
+                case "1":
+                    Console.Clear();
+                    Console.WriteLine("Type The Stack Name(Topic) You Want");
+                    string stackName = Console.ReadLine();
+                    StackRepo.Create(stackName);
+                    break;
             }
+        }
+        public static void StackChoiceMenu()
+        {
+            List<Stack> stackNames = StackRepo.GetAllStacks();
+            if (stackNames.Count == 0)
+                NoStackMenu();
+            
             MenuPrinter.PrintStackChoice(stackNames);
+            string input = Console.ReadLine();
+            Stack workingStack = stackNames.FirstOrDefault(stack => stack.Topic == input);
+            WorkingStackMenu(workingStack);
+        }
 
-
+        public static void WorkingStackMenu(Stack stack)
+        {
+            MenuPrinter.PrintWorkingStackMenu(stack.Topic);
+            string input = InputHandler.GetOptionInput();
+            switch (input)
+            {
+                case "0":
+                    break;
+            }
         }
     }
     public class InputHandler 

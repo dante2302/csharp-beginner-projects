@@ -1,4 +1,5 @@
 ﻿using System.Configuration;
+using DBClasses;
 using System.Data.SqlClient;
 
 namespace DBManagement
@@ -23,14 +24,7 @@ namespace DBManagement
             }
             return affectedRows;
         }
-    }
-    class StackRepo : DBRepo
-    {
-        public static void Create(string stackName)
-        {
-            ExecNonQueryCmd($"INSERT INTO Stacks(Topic) VALUES('{stackName}')");
-        }
-        public static List<string> GetAllStackNames()
+        internal static void ExecReaderCmd(string command, Action<SqlDataReader> readerAction)
         {
             using (var connection = new SqlConnection(connectionString))
             {
@@ -40,20 +34,57 @@ namespace DBManagement
                 var cmd = new SqlCommand(commandText, connection);
                 using (var reader = cmd.ExecuteReader())
                 {
-                    List<string> stackNameList = [];
-                    while (reader.Read())
-                    {
-                        stackNameList.Add(
-                            reader.GetString(0));
-                    }
-                    return stackNameList;
+                    readerAction(reader);
                 }
             }
         }
 
     }
-
-    class DataManager 
+    class StackRepo : DBRepo
     {
-           }
+        public static void Create(string stackName)
+        {
+            ExecNonQueryCmd($"INSERT INTO Stacks(Topic) VALUES('{stackName}')");
+        }
+
+        public static List<Stack> GetAllStacks()
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string commandText =
+                    "SELECT * FROM Stacks";
+                var cmd = new SqlCommand(commandText, connection);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    List<Stack> stackList = [];
+                    while (reader.Read())
+                    {
+                        stackList.Add(
+                            new Stack 
+                            { 
+                                Id = reader.GetInt32(0), 
+                                Topic = reader.GetString(1) 
+                            });
+                    }
+                    return stackList;
+                }
+            }
+        }
+    }
+    class FlashcardsRepo : DBRepo
+    {
+        static void GetAllFromAStack(int stackId)
+        {
+            string commandText = $"SELECT * FROM flashcards WHERE Stack = '{stackId}'";
+            List<Flashcard> cards = [];
+            ExecReaderCmd(commandText, reader =>
+                {
+                    while (reader.Read())
+                    {
+                        
+                    }
+                });
+        }
+    }
 }
