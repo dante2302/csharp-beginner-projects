@@ -1,4 +1,5 @@
-﻿using DBClasses;
+﻿using ConsoleTableExt;
+using DBClasses;
 namespace Visualization 
 {
     public class MenuPrinter 
@@ -55,6 +56,18 @@ namespace Visualization
             Console.WriteLine("-------------------------");
 
         }
+    }
+    public class CardPrinter
+    {
+        public static void PrintFlashcards(List<Flashcard> cards, string stackName)
+        {
+            Console.Clear();
+            ConsoleTableBuilder
+                .From(cards)
+                .WithTitle(stackName)
+                .ExportAndWriteLine();
+        }
+
     }
 
     public class ErrorPrinter 

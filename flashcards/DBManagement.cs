@@ -24,13 +24,11 @@ namespace DBManagement
             }
             return affectedRows;
         }
-        internal static void ExecReaderCmd(string command, Action<SqlDataReader> readerAction)
+        internal static void ExecReaderCmd(string commandText, Action<SqlDataReader> readerAction)
         {
             using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                string commandText =
-                    "SELECT Topic FROM Stacks";
                 var cmd = new SqlCommand(commandText, connection);
                 using (var reader = cmd.ExecuteReader())
                 {
@@ -74,17 +72,26 @@ namespace DBManagement
     }
     class FlashcardsRepo : DBRepo
     {
-        static void GetAllFromAStack(int stackId)
+        public static List<Flashcard> GetAllFromAStack(int stackId)
         {
-            string commandText = $"SELECT * FROM flashcards WHERE Stack = '{stackId}'";
+            string commandText = $"SELECT * FROM Cards WHERE Stack = {stackId}";
             List<Flashcard> cards = [];
             ExecReaderCmd(commandText, reader =>
                 {
                     while (reader.Read())
                     {
-                        
+                        cards.Add(
+                            new Flashcard
+                            {
+                                Id = reader.GetInt32(0),
+                                Front = reader.GetString(1),
+                                Back = reader.GetString(2),
+                                StackId = (int)reader.GetInt32(3)
+                            }
+                            );
                     }
                 });
+            return cards;
         }
     }
 }

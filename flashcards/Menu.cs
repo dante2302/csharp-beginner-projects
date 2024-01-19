@@ -61,8 +61,30 @@ namespace Menu
             switch (input)
             {
                 case "0":
+                    MainMenu();
+                    break;
+                case "G":
+                    StackChoiceMenu();
+                    break;
+                case "M":
+                    ManageStackMenu();
+                    break;
+                case "V":
+                    List<Flashcard> stackFlashcards = FlashcardsRepo.GetAllFromAStack(stack.Id);
+                    CardPrinter.PrintFlashcards(stackFlashcards, stack.Topic);
+                    break;
+                case "N":
+                    break;
+                case "E":
+                    break;
+                case "D":
                     break;
             }
+        }
+
+        public static void ManageStackMenu()
+        {
+
         }
     }
     public class InputHandler 
