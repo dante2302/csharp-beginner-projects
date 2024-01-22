@@ -1,21 +1,21 @@
-﻿using DBManagement;
-using DBClasses;
+﻿using DBClasses;
+using DBManagement;
 using Visualization;
 
 namespace Menu
 {
-    public class MenuHandler
+    public class MainMenu
     {
-        public static void MainMenu()
+        public static void Init()
         {
             MenuPrinter.PrintMainMenu();
             string option = InputHandler.GetOptionInput();
-            switch (option) 
+            switch (option)
             {
                 case "S":
                     break;
                 case "MS":
-                    StackChoiceMenu();
+                    StackMenu.StackChoice();
                     break;
                 case "MF":
                     break;
@@ -26,28 +26,31 @@ namespace Menu
                     break;
             }
         }
-        public static void NoStackMenu()
+    }
+    public class StackMenu()
         {
-            string input = InputHandler.NoStacksInput();
-            switch (input)
+            public static void NoStack()
             {
-                case "0":
-                    MainMenu();
-                    break;
-                case "1":
-                    Console.Clear();
-                    Console.WriteLine("Type The Stack Name(Topic) You Want");
-                    string stackName = Console.ReadLine();
-                    StackRepo.Create(stackName);
-                    break;
+                string input = InputHandler.NoStacksInput();
+                switch (input)
+                {
+                    case "0":
+                        MainMenu.Init();
+                        break;
+                    case "1":
+                        Console.Clear();
+                        Console.WriteLine("Type The Stack Name(Topic) You Want");
+                        string stackName = Console.ReadLine();
+                        StackRepo.Create(stackName);
+                        break;
+                }
             }
-        }
-        public static void StackChoiceMenu()
+        public static void StackChoice()
         {
             List<Stack> stackNames = StackRepo.GetAllStacks();
             if (stackNames.Count == 0)
-                NoStackMenu();
-            
+                NoStack();
+
             MenuPrinter.PrintStackChoice(stackNames);
             string input = Console.ReadLine();
             Stack workingStack = stackNames.FirstOrDefault(stack => stack.Topic == input);
@@ -61,19 +64,22 @@ namespace Menu
             switch (input)
             {
                 case "0":
-                    MainMenu();
+                    MainMenu.Init();
                     break;
                 case "G":
-                    StackChoiceMenu();
+                    StackChoice();
                     break;
                 case "M":
                     ManageStackMenu();
                     break;
                 case "V":
-                    List<Flashcard> stackFlashcards = FlashcardsRepo.GetAllFromAStack(stack.Id);
-                    CardPrinter.PrintFlashcards(stackFlashcards, stack.Topic);
+                    List<Flashcard> allStackFlashcards = FlashcardsRepo.GetNFromAStack(stack.Id);
+                    CardPrinter.PrintFlashcards(allStackFlashcards, stack.Topic);
                     break;
                 case "N":
+                    int number = InputHandler.GetNumberInput();
+                    List<Flashcard> nStackFlashcards = FlashcardsRepo.GetNFromAStack(stack.Id, number);
+                    CardPrinter.PrintFlashcards(nStackFlashcards, stack.Topic);
                     break;
                 case "E":
                     break;
@@ -84,11 +90,12 @@ namespace Menu
 
         public static void ManageStackMenu()
         {
+            Print
 
         }
     }
-    public class InputHandler 
-    { 
+    public class InputHandler
+    {
         public static string GetOptionInput()
         {
             return Console.ReadLine().ToUpper();
@@ -97,6 +104,10 @@ namespace Menu
         {
             ErrorPrinter.NoStacks();
             return Console.ReadLine();
+        }
+        public static int GetNumberInput()
+        {
+            return Convert.ToInt32(Console.ReadLine());
         }
     }
 }

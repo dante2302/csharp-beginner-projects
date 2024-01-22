@@ -33,13 +33,18 @@ namespace Visualization
         public static void PrintStackChoice(List<Stack> stackNameList)
         {
             Console.Clear();
+            Console.WriteLine("\n------------\n");
             Console.WriteLine("0 - Go Back To The Main Menu");
             Console.WriteLine("1 - Create A New Stack");
             Console.WriteLine("yourStackName - Manage The Stack");
-            Console.WriteLine("\n------------");
+            Console.WriteLine("\n\n------------\n");
             Console.WriteLine("Your Stacks:");
-            for(int i = 0; i < stackNameList.Count; i++)
+            for (int i = 0; i < stackNameList.Count; i++)
+            {
+                Console.WriteLine("**");
                 Console.WriteLine(stackNameList[i]?.Topic);
+                Console.WriteLine("**");
+            }
         }
 
         public static void PrintWorkingStackMenu(string stackName) 

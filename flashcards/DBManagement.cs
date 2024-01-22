@@ -72,9 +72,10 @@ namespace DBManagement
     }
     class FlashcardsRepo : DBRepo
     {
-        public static List<Flashcard> GetAllFromAStack(int stackId)
+        public static List<Flashcard> GetNFromAStack(int stackId, int count=-1)
         {
-            string commandText = $"SELECT * FROM Cards WHERE Stack = {stackId}";
+            // if count is not specified, select all records.
+            string commandText = $"SELECT {(count == -1 ? "*" : count)} FROM Cards WHERE Stack = {stackId}";
             List<Flashcard> cards = [];
             ExecReaderCmd(commandText, reader =>
                 {
@@ -86,7 +87,7 @@ namespace DBManagement
                                 Id = reader.GetInt32(0),
                                 Front = reader.GetString(1),
                                 Back = reader.GetString(2),
-                                StackId = (int)reader.GetInt32(3)
+                                StackId = reader.GetInt32(3)
                             }
                             );
                     }
