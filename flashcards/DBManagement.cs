@@ -50,7 +50,7 @@ namespace DBManagement
             ExecNonQueryCmd(
                 $@"
                 UPDATE Stacks
-                SET Topic = {editInfo}
+                SET Topic = '{editInfo}'
                 WHERE Id = {stackId}");
         }
 
@@ -64,8 +64,8 @@ namespace DBManagement
             using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                string commandText =
-                    "SELECT * FROM Stacks";
+                string commandText = "SELECT * FROM Stacks";
+
                 var cmd = new SqlCommand(commandText, connection);
                 using (var reader = cmd.ExecuteReader())
                 {
@@ -88,14 +88,34 @@ namespace DBManagement
     {
         public static void Create(string Front, string Back, int Stack)
         {
-            string commandText = "INSERT INTO cards(Front, Back, Stack) VALUES()";
+            string commandText = $@"
+                INSERT INTO Cards(Front, Back, Stack) 
+                VALUES({Front}, {Back}, {Stack})";
+            ExecNonQueryCmd(commandText);
+        }
+
+        public static void Edit(int cardId, string frontEditInfo, string backEditInfo)
+        {
+            string commandText = $@"
+                UPDATE Cards 
+                SET Front = '{frontEditInfo}', Back = '{backEditInfo}'
+                WHERE Id = {cardId}";
+            ExecNonQueryCmd(commandText);
+        }
+
+        public static void Delete(int cardId)
+        {
+            string commandText = $"DELETE FROM Cards WHERE Id = {cardId}";
             ExecNonQueryCmd(commandText);
         }
 
         public static List<Flashcard> GetNFromAStack(int stackId, int count=-1)
         {
             // if count is not specified, select all records.
-            string commandText = $"SELECT {(count == -1 ? "*" : count)} FROM Cards WHERE Stack = {stackId}";
+            string commandText = $@"
+                SELECT {(count == -1 ? "*" : count)} 
+                FROM Cards WHERE Stack = {stackId}";
+
             List<Flashcard> cards = [];
             ExecReaderCmd(commandText, reader =>
                 {

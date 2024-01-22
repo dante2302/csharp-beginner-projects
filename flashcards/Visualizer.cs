@@ -36,18 +36,19 @@ namespace Visualization
             Console.WriteLine("0 - Go Back To The Main Menu");
             Console.WriteLine("1 - Create A New Stack");
             Console.WriteLine("yourStackName - Manage The Stack");
-            Console.WriteLine("\n\n------------\n");
+            Console.WriteLine("\n\n------------");
             Console.WriteLine("Your Stacks:");
             for (int i = 0; i < stackNameList.Count; i++)
             {
-                Console.WriteLine("**");
+                Console.WriteLine("***");
                 Console.WriteLine(stackNameList[i]?.Topic);
-                Console.WriteLine("**");
+                Console.WriteLine("***");
             }
         }
 
         public static void PrintWorkingStackMenu(string stackName) 
         {
+            Console.Clear();
             Console.WriteLine("-------------------------");
             Console.WriteLine($"Current Working Stack: {stackName}");
             Console.WriteLine("0 - Return To The Main Menu");

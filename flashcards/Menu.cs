@@ -25,6 +25,7 @@ namespace Menu
             }
         }
     }
+
     public class ManageMenu()
     {
         public static void NoStack()
@@ -36,10 +37,6 @@ namespace Menu
                     MainMenu.Init();
                     break;
                 case "1":
-                    Console.Clear();
-                    Console.WriteLine("Type The Stack Name(Topic) You Want");
-                    string stackName = Console.ReadLine();
-                    StackRepo.Create(stackName);
                     break;
             }
         }
@@ -50,7 +47,19 @@ namespace Menu
                 NoStack();
 
             MenuPrinter.PrintStackChoice(stackNames);
+
             string input = Console.ReadLine();
+            switch (input)
+            {
+                case "0":
+                    MainMenu.Init();
+                    break;
+                case "1":
+                    string newStackName = InputHandler.createStack();
+                    StackRepo.Create(newStackName);
+                    MainMenu.Init();
+                    break;
+            }
             Stack workingStack = stackNames.FirstOrDefault(stack => stack.Topic == input);
             WorkingStackMenu(workingStack);
         }
@@ -91,10 +100,10 @@ namespace Menu
             Console.WriteLine($"Current Working Stack: {stack.Topic}");
             MenuPrinter.PrintStackManageMenu();
             string input = InputHandler.GetOptionInput();
-            string editInfo = "a";
             switch(input) 
             {
                 case "E":
+                    string editInfo = InputHandler.GetEditInfo();
                     StackRepo.Edit(stack.Id, editInfo);
                     break;
                 case "D":
@@ -108,6 +117,19 @@ namespace Menu
     }
     public class InputHandler
     {
+        public static string  createStack()
+        {
+            Console.Clear();
+            Console.WriteLine("Type The Stack Name(Topic) You Want");
+            string stackName = Console.ReadLine();
+            return stackName;
+        }
+
+        public static string GetEditInfo()
+        {
+            return Console.ReadLine();
+        }
+
         public static bool GetConfirmation()
         {
             MenuPrinter.PrintConfirmation();
