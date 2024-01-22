@@ -15,8 +15,7 @@ namespace Visualization
             Console.WriteLine(symbolLine);
             Console.WriteLine("\t Main Menu \t");
             Console.WriteLine("S - Study");
-            Console.WriteLine("MS - Manage Stacks");
-            Console.WriteLine("MF - Manage Flashcards");
+            Console.WriteLine("M- Manage Stacks And Flashcards");
             Console.WriteLine("R - View Session Report");
             Console.WriteLine("0 - Exit");
             Console.WriteLine(symbolLine);
@@ -55,11 +54,23 @@ namespace Visualization
             Console.WriteLine("G - Change The Current Working Stack");
             Console.WriteLine("M - Manage Current Stack");
             Console.WriteLine("V - View All Flashcards");
-            Console.WriteLine("N - View X Amount Of Flashcards");
+            Console.WriteLine("N - View N Number Of Flashcards");
+            Console.WriteLine("C - Create A Flashcard");
             Console.WriteLine("E - Edit A Flashcard");
             Console.WriteLine("D - Delete A Flashcard");
             Console.WriteLine("-------------------------");
 
+        }
+
+        public static void PrintStackManageMenu()
+        {
+
+        }
+        public static void PrintConfirmation()
+        {
+            Console.WriteLine("\n\nAre you sure you want to delete?");
+            Console.WriteLine("Y -Yes");
+            Console.WriteLine("N - No");
         }
     }
     public class CardPrinter

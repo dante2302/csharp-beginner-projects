@@ -14,10 +14,8 @@ namespace Menu
             {
                 case "S":
                     break;
-                case "MS":
-                    StackMenu.StackChoice();
-                    break;
-                case "MF":
+                case "M":
+                    ManageMenu.StackChoice();
                     break;
                 case "R":
                     break;
@@ -27,24 +25,24 @@ namespace Menu
             }
         }
     }
-    public class StackMenu()
+    public class ManageMenu()
+    {
+        public static void NoStack()
         {
-            public static void NoStack()
+            string input = InputHandler.NoStacksInput();
+            switch (input)
             {
-                string input = InputHandler.NoStacksInput();
-                switch (input)
-                {
-                    case "0":
-                        MainMenu.Init();
-                        break;
-                    case "1":
-                        Console.Clear();
-                        Console.WriteLine("Type The Stack Name(Topic) You Want");
-                        string stackName = Console.ReadLine();
-                        StackRepo.Create(stackName);
-                        break;
-                }
+                case "0":
+                    MainMenu.Init();
+                    break;
+                case "1":
+                    Console.Clear();
+                    Console.WriteLine("Type The Stack Name(Topic) You Want");
+                    string stackName = Console.ReadLine();
+                    StackRepo.Create(stackName);
+                    break;
             }
+        }
         public static void StackChoice()
         {
             List<Stack> stackNames = StackRepo.GetAllStacks();
@@ -70,7 +68,7 @@ namespace Menu
                     StackChoice();
                     break;
                 case "M":
-                    ManageStackMenu();
+                    ManageStackMenu(stack);
                     break;
                 case "V":
                     List<Flashcard> allStackFlashcards = FlashcardsRepo.GetNFromAStack(stack.Id);
@@ -88,14 +86,35 @@ namespace Menu
             }
         }
 
-        public static void ManageStackMenu()
+        public static void ManageStackMenu(Stack stack)
         {
-            Print
-
+            Console.WriteLine($"Current Working Stack: {stack.Topic}");
+            MenuPrinter.PrintStackManageMenu();
+            string input = InputHandler.GetOptionInput();
+            string editInfo = "a";
+            switch(input) 
+            {
+                case "E":
+                    StackRepo.Edit(stack.Id, editInfo);
+                    break;
+                case "D":
+                    if (InputHandler.GetConfirmation())
+                        StackRepo.Delete(stack.Id);
+                    else
+                        WorkingStackMenu(stack);
+                    break;
+            }
         }
     }
     public class InputHandler
     {
+        public static bool GetConfirmation()
+        {
+            MenuPrinter.PrintConfirmation();
+            string input = Console.ReadLine();
+            return (input == "y" ? true : false);
+        }
+
         public static string GetOptionInput()
         {
             return Console.ReadLine().ToUpper();

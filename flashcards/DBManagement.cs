@@ -45,6 +45,20 @@ namespace DBManagement
             ExecNonQueryCmd($"INSERT INTO Stacks(Topic) VALUES('{stackName}')");
         }
 
+        public static void Edit(int stackId, string editInfo)
+        {
+            ExecNonQueryCmd(
+                $@"
+                UPDATE Stacks
+                SET Topic = {editInfo}
+                WHERE Id = {stackId}");
+        }
+
+        public static void Delete(int stackId)
+        {
+            ExecNonQueryCmd($"DELETE FROM Stacks WHERE Id = {stackId}");
+        }
+
         public static List<Stack> GetAllStacks()
         {
             using (var connection = new SqlConnection(connectionString))
@@ -72,6 +86,12 @@ namespace DBManagement
     }
     class FlashcardsRepo : DBRepo
     {
+        public static void Create(string Front, string Back, int Stack)
+        {
+            string commandText = "INSERT INTO cards(Front, Back, Stack) VALUES()";
+            ExecNonQueryCmd(commandText);
+        }
+
         public static List<Flashcard> GetNFromAStack(int stackId, int count=-1)
         {
             // if count is not specified, select all records.
