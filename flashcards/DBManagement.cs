@@ -90,15 +90,15 @@ namespace DBManagement
         {
             string commandText = $@"
                 INSERT INTO Cards(Front, Back, Stack) 
-                VALUES({Front}, {Back}, {Stack})";
+                VALUES('{Front}', '{Back}', {Stack})";
             ExecNonQueryCmd(commandText);
         }
 
-        public static void Edit(int cardId, string frontEditInfo, string backEditInfo)
+        public static void Edit(int cardId, string property, string editInfo)
         {
             string commandText = $@"
                 UPDATE Cards 
-                SET Front = '{frontEditInfo}', Back = '{backEditInfo}'
+                SET {property} = {editInfo}'
                 WHERE Id = {cardId}";
             ExecNonQueryCmd(commandText);
         }

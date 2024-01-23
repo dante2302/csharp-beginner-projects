@@ -28,6 +28,7 @@ namespace Menu
 
     public class ManageMenu()
     {
+        private static Stack workingStack;
         public static void NoStack()
         {
             string input = InputHandler.NoStacksInput();
@@ -55,18 +56,18 @@ namespace Menu
                     MainMenu.Init();
                     break;
                 case "1":
-                    string newStackName = InputHandler.createStack();
+                    string newStackName = InputHandler.GetStringInput("Type The Name(Topic) Of The Stack: ");
                     StackRepo.Create(newStackName);
                     MainMenu.Init();
                     break;
             }
-            Stack workingStack = stackNames.FirstOrDefault(stack => stack.Topic == input);
-            WorkingStackMenu(workingStack);
+            workingStack = stackNames.FirstOrDefault(stack => stack.Topic == input);
+            WorkingStackMenu();
         }
 
-        public static void WorkingStackMenu(Stack stack)
+        public static void WorkingStackMenu()
         {
-            MenuPrinter.PrintWorkingStackMenu(stack.Topic);
+            MenuPrinter.PrintWorkingStackMenu(workingStack.Topic);
             string input = InputHandler.GetOptionInput();
             switch (input)
             {
@@ -77,52 +78,100 @@ namespace Menu
                     StackChoice();
                     break;
                 case "M":
-                    ManageStackMenu(stack);
+                    ManageStackMenu();
                     break;
                 case "V":
-                    List<Flashcard> allStackFlashcards = FlashcardsRepo.GetNFromAStack(stack.Id);
-                    CardPrinter.PrintFlashcards(allStackFlashcards, stack.Topic);
+                    List<Flashcard> allStackFlashcards = FlashcardsRepo.GetNFromAStack(workingStack.Id);
+                    CardPrinter.PrintFlashcards(allStackFlashcards, workingStack.Topic);
                     break;
                 case "N":
                     int number = InputHandler.GetNumberInput();
-                    List<Flashcard> nStackFlashcards = FlashcardsRepo.GetNFromAStack(stack.Id, number);
-                    CardPrinter.PrintFlashcards(nStackFlashcards, stack.Topic);
+                    List<Flashcard> nStackFlashcards = FlashcardsRepo.GetNFromAStack(workingStack.Id, number);
+                    CardPrinter.PrintFlashcards(nStackFlashcards, workingStack.Topic);
+                    break;
+                case "C":
+                    CreateFlashcardMenu();
                     break;
                 case "E":
+                    EditFlashcardMenu();
                     break;
                 case "D":
+                    DeleteFlashcardMenu();
                     break;
             }
         }
 
-        public static void ManageStackMenu(Stack stack)
+        public static void ManageStackMenu()
         {
-            Console.WriteLine($"Current Working Stack: {stack.Topic}");
+            Console.WriteLine($"Current Working Stack: {workingStack.Topic}");
             MenuPrinter.PrintStackManageMenu();
             string input = InputHandler.GetOptionInput();
             switch(input) 
             {
                 case "E":
                     string editInfo = InputHandler.GetEditInfo();
-                    StackRepo.Edit(stack.Id, editInfo);
+                    StackRepo.Edit(workingStack.Id, editInfo);
                     break;
                 case "D":
                     if (InputHandler.GetConfirmation())
-                        StackRepo.Delete(stack.Id);
+                        StackRepo.Delete(workingStack.Id);
                     else
-                        WorkingStackMenu(stack);
+                        WorkingStackMenu();
                     break;
             }
+        }
+
+
+        public static void CreateFlashcardMenu()
+        {
+            string Front = InputHandler.GetStringInput("Type The Front Part Of The Card: ");
+            string Back = InputHandler.GetStringInput("Type The Back Part Of THe Card: ");
+            FlashcardsRepo.Create(Front, Back, workingStack.Id);
+            WorkingStackMenu();
+        }
+
+        public static void EditFlashcardMenu()
+        {
+            int cardIdForEdit = InputHandler.GetIntInput("Which Card Do You Want To Edit(Id)"); 
+            string propForEdit = InputHandler.GetStringInput("Type Which Property You Want To Edit\n Front(f) or Back(b)").ToUpper();
+            switch (propForEdit)
+            {
+                case "F":
+                case "FRONT":
+                    string frontEditInfo = InputHandler.GetStringInput("Type The New Value Of The Card Front");
+                    FlashcardsRepo.Edit(cardIdForEdit, "Front", frontEditInfo);
+                    break;
+                case "B":
+                case "BACK":
+                    string backEditInfo = InputHandler.GetStringInput("Type The New Value Of The Card Back");
+                    FlashcardsRepo.Edit(cardIdForEdit, "Back", backEditInfo);
+                    break;
+            }
+        }
+
+        public static void DeleteFlashcardMenu()
+        {
+            int cardId = InputHandler.GetIntInput("Which Card Do You Want To Delete(Id)");
+            InputHandler.GetConfirmation($"Flashcard - #{cardId}");
+            FlashcardsRepo.Delete(cardId);
         }
     }
     public class InputHandler
     {
-        public static string  createStack()
+        public static int GetIntInput(string message)
         {
             Console.Clear();
-            Console.WriteLine("Type The Stack Name(Topic) You Want");
-            string stackName = Console.ReadLine();
-            return stackName;
+            Console.WriteLine(message);
+            int input = Convert.ToInt32(Console.ReadLine());
+            return input;
+        }
+
+        public static string GetStringInput(string message)
+        {
+            Console.Clear();
+            Console.WriteLine(message);
+            string input = Console.ReadLine();
+            return input;
         }
 
         public static string GetEditInfo()
@@ -130,9 +179,9 @@ namespace Menu
             return Console.ReadLine();
         }
 
-        public static bool GetConfirmation()
+        public static bool GetConfirmation(string typeOfConfirmation="")
         {
-            MenuPrinter.PrintConfirmation();
+            MenuPrinter.PrintConfirmation(typeOfConfirmation);
             string input = Console.ReadLine();
             return (input == "y" ? true : false);
         }

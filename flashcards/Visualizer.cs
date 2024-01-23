@@ -42,7 +42,6 @@ namespace Visualization
             {
                 Console.WriteLine("***");
                 Console.WriteLine(stackNameList[i]?.Topic);
-                Console.WriteLine("***");
             }
         }
 
@@ -67,9 +66,9 @@ namespace Visualization
         {
 
         }
-        public static void PrintConfirmation()
+        public static void PrintConfirmation(string forDeletion = "")
         {
-            Console.WriteLine("\n\nAre you sure you want to delete?");
+            Console.WriteLine($"\n\nAre you sure you want to delete {forDeletion}?");
             Console.WriteLine("Y -Yes");
             Console.WriteLine("N - No");
         }
