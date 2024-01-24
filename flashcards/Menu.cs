@@ -21,6 +21,7 @@ namespace Menu
                     ManageMenu.WorkingStackMenu();
                     break;
                 case "R":
+                    ReportMenu.ViewReport();
                     break;
                 case "0":
                     Environment.Exit(0);
@@ -291,19 +292,40 @@ namespace Menu
 
     public class ReportMenu
     {
+        private static Stack workingStack;
         public static void ViewReport()
         {
-            Stack workingStack = ManageMenu.StackChoice();
+            workingStack = ManageMenu.StackChoice();
             Console.Clear();
-
             List<StudySession> sessionList = SessionRepo.GetFromAStack(workingStack.Id);
             SessionPrinter.PrintSessions(sessionList, workingStack.Topic);
-            Console.WriteLine();
+            Console.WriteLine("\n 0 - Go Back To The Main Menu");
+            Console.WriteLine("1 - View Top 5 Questions");
+            string input = Console.ReadLine();
+            if(input == "1") 
+                ViewTopQuestions();
         }
 
-        public static void ViewSessionTopQuestions(int sessionId)
+        private static void ViewTopQuestions()
         {
-            List<Flashcard> topCards = FlashcardsRepo.GetFromASession(sessionId, topLimit: 5);
+            Console.Clear();
+            List<Flashcard> topCards = FlashcardsRepo.GetTopCards(5);
+            var CurrentStackCards = topCards.FindAll(card => card.StackId == workingStack.Id);
+
+            if(CurrentStackCards.Count == 0)
+                Console.WriteLine("No cards in the current stack");
+
+            else
+            {
+                List<FlashcardDTO> dtoList = [];
+                foreach (Flashcard card in CurrentStackCards)
+                    dtoList.Add(new FlashcardDTO(card));
+                CardPrinter.PrintFlashcardDTO(dtoList, workingStack.Topic);
+            }
+
+            Console.WriteLine("Type Any Key To Go Back:");
+            Console.ReadLine();
+            ViewReport();
         }
     }
 

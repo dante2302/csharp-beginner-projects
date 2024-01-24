@@ -82,6 +82,15 @@ namespace Visualization
                 .WithTitle(stackName)
                 .ExportAndWriteLine();
         }
+
+        public static void PrintFlashcardDTO(List<FlashcardDTO> cards, string stackName)
+        {
+            Console.Clear();
+            ConsoleTableBuilder
+               .From(cards)
+                .WithTitle(stackName)
+                .ExportAndWriteLine();
+        }
     }
 
     public class SessionPrinter

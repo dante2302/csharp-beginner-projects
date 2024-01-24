@@ -160,41 +160,40 @@ namespace DBManagement
             return cards;
         }
 
-        public static List<Flashcard> GetFromASession(int sessionId, int topLimit = 0)
+        public static List<Flashcard> GetTopCards(int topLimit)
         {
             string commandText = "";
 
             if (topLimit != 0)
             {
                 commandText = $@"
-                    WITH Ranked AS(
-                        SELECT 
-                            Flashcard,
-                        COUNT(*) AS occurence,
-                        ROW_NUMBER() OVER (ORDER BY COUNT(*) DESC) AS Row_Num
-                        FROM SessionQuestions
-                        GROUP BY Flashcard
-                    )
+                     WITH Ranked AS(
+                         SELECT 
+                             Flashcard,
+                         COUNT(*) AS occurence,
 
-                    SELECT 
-                        Flashcard,
-                        occurence
-                    FROM Ranked
-                    WHERE Row_Num <= {topLimit}
-                    )";
+                         ROW_NUMBER() OVER (
+                             ORDER BY COUNT(*) DESC) AS Row_Num
+
+                         FROM SessionQuestions
+                         GROUP BY  Flashcard
+                     )
+
+                     SELECT 
+                         Flashcard,
+                         occurence
+
+                     FROM Ranked
+                     WHERE Row_Num <= {topLimit}";
             }
 
-            commandText = $@"
-                SELECT Flashcard 
-                FROM SessionQuestions 
-                WHERE sessionId = {sessionId}";
 
-            int[] topCardIds = [];
-
+            List<int> topCardIds = [];
+             
             ExecReaderCmd(commandText, reader =>
             {
                 while (reader.Read())
-                    topCardIds.Append(reader.GetInt32(0));
+                    topCardIds.Add(reader.GetInt32(0));
             });
 
             List<Flashcard> cards = [];
@@ -202,8 +201,7 @@ namespace DBManagement
             foreach (int id in topCardIds)
             {
                 var card = GetById(id);
-                if(card.Id != -1)
-                    cards.Add(card); 
+                cards.Add(card);
             }
 
             return cards;
@@ -245,7 +243,7 @@ namespace DBManagement
         {
             List<StudySession> sessionList = [];
 
-            string cmdText = $"SELECT * FROM StudySessions WHERE StackId = {stackId}";
+            string cmdText = $"SELECT * FROM StudySessions WHERE Stack = {stackId}";
             ExecReaderCmd(cmdText, reader =>
             {
                 while (reader.Read())
