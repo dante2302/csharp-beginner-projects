@@ -15,8 +15,9 @@
 
     public class StudySession 
     {
-        int points { get; set; }
-        int maxPoints { get; set; }
-        int StackId { get; set; }
+        public int id { get; set; }
+        public int points { get; set; }
+        public int maxPoints { get; set; }
+        int stackId { get; set; }
     }
 }

@@ -113,7 +113,25 @@ namespace DBManagement
             return wasDeleted;
         }
 
-        public static List<Flashcard> GetNFromAStack(int stackId, int limit=0, bool random=false)
+        public static Flashcard GetById(int id)
+        {
+            string commandText = $"SELECT * FROM Cards WHERE Id = {id}";
+            Flashcard card = new();
+            card.Id = -1;
+            ExecReaderCmd(commandText, reader =>
+                {
+                    if (reader.Read())
+                    {
+                        card.Id = reader.GetInt32(0);
+                        card.Front = reader.GetString(1);
+                        card.Back = reader.GetString(2);
+                        card.StackId = reader.GetInt32(3);
+                    }
+                });
+            return card;
+        }
+
+    public static List<Flashcard> GetNFromAStack(int stackId, int limit = 0, bool random = false)
         {
             // if count is not specified, select all records.
             string commandText = $@"
@@ -142,8 +160,56 @@ namespace DBManagement
             return cards;
         }
 
+        public static List<Flashcard> GetFromASession(int sessionId, int topLimit = 0)
+        {
+            string commandText = "";
+
+            if (topLimit != 0)
+            {
+                commandText = $@"
+                    WITH Ranked AS(
+                        SELECT 
+                            Flashcard,
+                        COUNT(*) AS occurence,
+                        ROW_NUMBER() OVER (ORDER BY COUNT(*) DESC) AS Row_Num
+                        FROM SessionQuestions
+                        GROUP BY Flashcard
+                    )
+
+                    SELECT 
+                        Flashcard,
+                        occurence
+                    FROM Ranked
+                    WHERE Row_Num <= {topLimit}
+                    )";
+            }
+
+            commandText = $@"
+                SELECT Flashcard 
+                FROM SessionQuestions 
+                WHERE sessionId = {sessionId}";
+
+            int[] topCardIds = [];
+
+            ExecReaderCmd(commandText, reader =>
+            {
+                while (reader.Read())
+                    topCardIds.Append(reader.GetInt32(0));
+            });
+
+            List<Flashcard> cards = [];
+
+            foreach (int id in topCardIds)
+            {
+                var card = GetById(id);
+                if(card.Id != -1)
+                    cards.Add(card); 
+            }
+
+            return cards;
+        }
     }
-    class SessionRepo: DBRepo
+        class SessionRepo : DBRepo
     {
         public static bool Create(List<Flashcard> cardList, int stackId, int Points, int MaxPoints)
         {
@@ -173,6 +239,28 @@ namespace DBManagement
                 }
             }
             return isGood;
+        }
+
+        public static List<StudySession> GetFromAStack(int stackId, int limit=0)
+        {
+            List<StudySession> sessionList = [];
+
+            string cmdText = $"SELECT * FROM StudySessions WHERE StackId = {stackId}";
+            ExecReaderCmd(cmdText, reader =>
+            {
+                while (reader.Read())
+                {
+                    sessionList.Add(
+                        new StudySession
+                        {
+                            id = reader.GetInt32(0),
+                            maxPoints = reader.GetInt32(1),
+                            points = reader.GetInt32(2)
+                        }
+                        );
+                }
+            });
+            return sessionList;
         }
     }
 }

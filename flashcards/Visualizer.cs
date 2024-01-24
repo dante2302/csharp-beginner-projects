@@ -84,6 +84,17 @@ namespace Visualization
         }
     }
 
+    public class SessionPrinter
+    {
+        public static void PrintSessions(List<StudySession> sessions, string stackName)
+        {
+            Console.Clear();
+            ConsoleTableBuilder
+               .From(sessions)
+                .WithTitle(stackName)
+                .ExportAndWriteLine();
+        }
+    }
     public class ErrorPrinter 
     { 
         public static void NoStacks()

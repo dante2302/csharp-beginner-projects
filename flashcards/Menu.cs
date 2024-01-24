@@ -221,6 +221,7 @@ namespace Menu
         }
     }
 
+
     public class StudyMenu
     {
         private Stack workingStack;
@@ -287,6 +288,25 @@ namespace Menu
             MainMenu.BackToMain();
         }
     }
+
+    public class ReportMenu
+    {
+        public static void ViewReport()
+        {
+            Stack workingStack = ManageMenu.StackChoice();
+            Console.Clear();
+
+            List<StudySession> sessionList = SessionRepo.GetFromAStack(workingStack.Id);
+            SessionPrinter.PrintSessions(sessionList, workingStack.Topic);
+            Console.WriteLine();
+        }
+
+        public static void ViewSessionTopQuestions(int sessionId)
+        {
+            List<Flashcard> topCards = FlashcardsRepo.GetFromASession(sessionId, topLimit: 5);
+        }
+    }
+
     public class InputHandler
     {
         public static int GetIntInput(string message)
