@@ -2,18 +2,11 @@
 {
     public class Flashcard
     {
-        public int Id;
-        public string Front
-        { get; set; }
+        public int Id { get; set; }
+        public string Front { get; set; }
         public string Back { get; set; }
         public int StackId { get; set; }    
     }
-    public class FlashcardDTO
-    {
-        public string Front { get; set; }
-        public string Back { get; set; }
-    }
-
     public class Stack
     {
         public int Id {  get; set; }

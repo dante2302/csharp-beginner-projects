@@ -1,6 +1,7 @@
 ﻿using System.Configuration;
 using DBClasses;
 using System.Data.SqlClient;
+using System.Runtime.InteropServices;
 
 namespace DBManagement
 {
@@ -86,34 +87,39 @@ namespace DBManagement
     }
     class FlashcardsRepo : DBRepo
     {
-        public static void Create(string Front, string Back, int Stack)
+        public static bool Create(string Front, string Back, int Stack)
         {
             string commandText = $@"
                 INSERT INTO Cards(Front, Back, Stack) 
                 VALUES('{Front}', '{Back}', {Stack})";
-            ExecNonQueryCmd(commandText);
+            bool wasCreated = (ExecNonQueryCmd(commandText) == 1);
+            return wasCreated;
         }
 
-        public static void Edit(int cardId, string property, string editInfo)
+        public static bool Edit(int cardId, string property, string editInfo)
         {
             string commandText = $@"
                 UPDATE Cards 
-                SET {property} = {editInfo}'
+                SET {property} = '{editInfo}'
                 WHERE Id = {cardId}";
-            ExecNonQueryCmd(commandText);
+            bool wasEdited = (ExecNonQueryCmd(commandText) == 1);
+            return wasEdited;
         }
 
-        public static void Delete(int cardId)
+        public static bool Delete(int cardId)
         {
             string commandText = $"DELETE FROM Cards WHERE Id = {cardId}";
-            ExecNonQueryCmd(commandText);
+            bool wasDeleted = (ExecNonQueryCmd(commandText) == 1);
+            return wasDeleted;
         }
 
-        public static List<Flashcard> GetNFromAStack(int stackId, int count=-1)
+        public static List<Flashcard> GetNFromAStack(int stackId, int limit=0)
         {
             // if count is not specified, select all records.
             string commandText = $@"
-                SELECT {(count == -1 ? "*" : count)} 
+                SELECT 
+                {(limit > 0 ? $"TOP {limit}" : "")}
+                *
                 FROM Cards WHERE Stack = {stackId}";
 
             List<Flashcard> cards = [];
@@ -133,6 +139,13 @@ namespace DBManagement
                     }
                 });
             return cards;
+        }
+    }
+    class SessionRepo: DBRepo
+    {
+        public static bool Create(List<Flashcard> cardList, int stackId)
+        {
+            ExecNonQueryCmd();
         }
     }
 }

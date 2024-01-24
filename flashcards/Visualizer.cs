@@ -62,15 +62,14 @@ namespace Visualization
 
         }
 
-        public static void PrintStackManageMenu()
+        public static void PrintStackManageMenu(string stackTopic)
         {
-
+            Console.WriteLine($"Managing Stack: {stackTopic}\n");
+            Console.WriteLine("-------------------------");
+            Console.WriteLine("");
         }
         public static void PrintConfirmation(string forDeletion = "")
         {
-            Console.WriteLine($"\n\nAre you sure you want to delete {forDeletion}?");
-            Console.WriteLine("Y -Yes");
-            Console.WriteLine("N - No");
         }
     }
     public class CardPrinter
@@ -79,11 +78,10 @@ namespace Visualization
         {
             Console.Clear();
             ConsoleTableBuilder
-                .From(cards)
+               .From(cards)
                 .WithTitle(stackName)
                 .ExportAndWriteLine();
         }
-
     }
 
     public class ErrorPrinter 
