@@ -232,7 +232,7 @@ namespace Menu
             workingStack = ManageMenu.StackChoice();
             Console.Clear();
             Console.WriteLine($"Stack: {workingStack.Topic}");
-            List<Flashcard> stackCards = FlashcardsRepo.GetNFromAStack(workingStack.Id);
+            List<Flashcard> stackCards = FlashcardsRepo.GetNFromAStack(workingStack.Id, limit: 3, random: true);
 
               if(stackCards.Count < 2)
             {
@@ -283,7 +283,7 @@ namespace Menu
             }
             Console.WriteLine("End Of Study Session");
             Console.WriteLine($"Good Job! You Got {points} out of {maxPoints} Points!");
-            SessionRepo
+            SessionRepo.Create(cards, workingStack.Id, points, maxPoints);
             MainMenu.BackToMain();
         }
     }

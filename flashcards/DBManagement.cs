@@ -113,14 +113,15 @@ namespace DBManagement
             return wasDeleted;
         }
 
-        public static List<Flashcard> GetNFromAStack(int stackId, int limit=0)
+        public static List<Flashcard> GetNFromAStack(int stackId, int limit=0, bool random=false)
         {
             // if count is not specified, select all records.
             string commandText = $@"
                 SELECT 
                 {(limit > 0 ? $"TOP {limit}" : "")}
                 *
-                FROM Cards WHERE Stack = {stackId}";
+                FROM Cards WHERE Stack = {stackId}
+                {(random ? "ORDER BY NEWID()" : "")}";
 
             List<Flashcard> cards = [];
             ExecReaderCmd(commandText, reader =>
@@ -140,12 +141,38 @@ namespace DBManagement
                 });
             return cards;
         }
+
     }
     class SessionRepo: DBRepo
     {
-        public static bool Create(List<Flashcard> cardList, int stackId)
+        public static bool Create(List<Flashcard> cardList, int stackId, int Points, int MaxPoints)
         {
-            ExecNonQueryCmd();
+            int newSessionId = -1;
+            bool isGood = false;
+
+            string cmdText = $@"
+                INSERT INTO StudySessions (Points, MaxPoints, Stack) 
+                OUTPUT INSERTED.ID VALUES ({Points},{MaxPoints},{stackId});";
+
+            ExecReaderCmd(cmdText,reader =>
+            {
+                if(reader.Read())
+                {
+                    newSessionId = reader.GetInt32(0);
+                }
+            });
+            if (newSessionId != -1)
+            {
+                foreach (Flashcard card in cardList)
+                {
+
+                    isGood = (ExecNonQueryCmd($@"
+                                INSERT INTO SessionQuestions(Session, Flashcard)
+                                VALUES({newSessionId}, {card.Id});") 
+                              == 1); 
+                }
+            }
+            return isGood;
         }
     }
 }
