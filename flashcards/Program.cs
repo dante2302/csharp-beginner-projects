@@ -1,2 +1,1 @@
-﻿using Menu;
-MenuHandler.MainMenu();
+﻿Menu.MainMenu.Init();
