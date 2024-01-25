@@ -1,2 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using drinks_info;
+
+var service = new DrinksService();
+service.GetCategories();
