@@ -9,7 +9,7 @@ namespace drinks_info
 {
     public class Category
     {
-        public string catStr { get; set; }
+        public string strCategory { get; set; }
     }
 
     public class Categories
