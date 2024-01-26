@@ -21,7 +21,7 @@ namespace drinks_info
                 TableBuilder.PrintTable(categories, "Categories");
             }
         }
-        public void GetByCategory(string categoryInput)
+        public void GetDrinksByCategory(string categoryInput)
         {
             RestClient client = new(baseUrl);
             RestRequest request = new($"filter.php?c={HttpUtility.UrlEncode(categoryInput)}");
@@ -33,6 +33,20 @@ namespace drinks_info
 
                 List<Drink> drinks = serialize.List;
                 TableBuilder.PrintTable(drinks, $"Drinks In {categoryInput}");
+            }
+        }
+
+        public void GetDrinkInfo(string id)
+        {
+            RestClient client = new(baseUrl);
+            RestRequest request = new($"lookup.php?i={HttpUtility.UrlEncode(id)}");
+            var response = client.ExecuteAsync(request);
+            if (response.Result.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                string rawResponse = response.Result.Content;
+                var serialize = JsonConvert.DeserializeObject<DrinkInfoObject>(rawResponse);
+                List<DrinkInfo> drinkInfoList = serialize.List;
+                TableBuilder.PrintTable(drinkInfoList, $"Drink Info: ");
             }
         }
     }
