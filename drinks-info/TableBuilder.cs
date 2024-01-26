@@ -13,6 +13,7 @@ namespace drinks_info
         public static void PrintTable<T>(List<T> list, [AllowNull] string tableName) 
             where T : class
         {
+            Console.Clear();
             if (tableName == null)
                 tableName = "";
 
