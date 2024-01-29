@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using System.Configuration;
+using System.ComponentModel.DataAnnotations;
 
 public class ContactContext : DbContext
 {
@@ -15,8 +15,8 @@ public class ContactContext : DbContext
 
 public class Contact
 {
-    public int Id;
-    public string Name;
-    public string Email;
-    public string PhoneNumber;
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Email { get; set; }
+    public string PhoneNumber { get; set; }
 }

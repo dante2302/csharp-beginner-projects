@@ -1,8 +1,3 @@
-﻿
-public class Program
-{
-    public static void Main()
-    {
-        var context = new ContactContext();
-    }
-}
+﻿using System.Configuration;
+Console.WriteLine(ConfigurationManager.ConnectionStrings["main"].ConnectionString);
+var context = new ContactContext();
