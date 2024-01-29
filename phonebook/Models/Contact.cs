@@ -11,6 +11,11 @@ public class ContactContext : DbContext
         optionsBuilder.UseSqlServer(ConfigurationManager.ConnectionStrings["main"].ConnectionString);
     }
 
+    public Contact GetById(int id)
+    {
+        return Contacts.Find(id);
+    }
+
 }
 
 public class Contact
