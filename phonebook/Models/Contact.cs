@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Configuration;
-using System.ComponentModel.DataAnnotations;
+
 
 public class ContactContext : DbContext
 {
@@ -13,7 +13,8 @@ public class ContactContext : DbContext
 
     public Contact GetById(int id)
     {
-        return Contacts.Find(id);
+        Contact contact = Contacts.Find(id);
+        return contact;
     }
 
 }
