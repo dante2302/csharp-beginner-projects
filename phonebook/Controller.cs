@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Diagnostics;
-using System.Diagnostics.Eventing.Reader;
-
+﻿
 public class Controller
 {
     private ContactContext context = new();
@@ -13,6 +11,27 @@ public class Controller
     public Contact ReadOne(int id)
     {
         return context.GetById(id);
+    }
+
+    public List<Contact> ReadAll()
+    {
+        return context.Contacts
+                        .OrderBy(c => c.Id)
+                        .ToList();
+    }
+
+    public void Update(int id, Contact updatedContact)
+    {
+        Contact contactForUpdate = ReadOne(id);
+        contactForUpdate = updatedContact;
+        context.SaveChanges();
+    }
+
+    public void Delete(int id)
+    {
+        Contact contactForDeletion = ReadOne(id);
+        context.Contacts.Remove(contactForDeletion);
+        context.SaveChanges();
     }
 }
 
@@ -48,7 +67,7 @@ public class InputHandler
                 break;
 
             case "4":
-                Updating()
+                Updating();
                 break;
 
             case "5":
@@ -57,7 +76,7 @@ public class InputHandler
         }
     }
 
-    public void Creation()
+    private void Creation()
     {
         string name = GetStrInput();
         string email = GetStrInput();
@@ -69,10 +88,28 @@ public class InputHandler
         MainMenu();
     }
 
-    public void ReadingOne()
+    private void ReadingOne()
     {
         int id = GetIntInput();
         controller.ReadOne(id);
+    }
+
+    private void ReadingAll()
+    {
+        List<Contact> allContacts = controller.ReadAll();
+        Printer.PrintContacts(allContacts);
+        GoBack();
+    }
+
+    private void Updating()
+    {
+        int id = GetIntInput();
+        controller.Update(id);
+    }
+    private void Deletion()
+    {
+        int id = GetIntInput();
+        controller.Delete(id);
     }
 
     public int GetIntInput()
@@ -83,6 +120,12 @@ public class InputHandler
     public string GetStrInput()
     {
         return Console.ReadLine();
+    }
+
+    public void GoBack()
+    {
+        Console.WriteLine("Type anything to go back...");
+        Console.ReadLine();
     }
 
 }
