@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "shifts-logger", "shifts-logger.csproj", "{6F96B8E8-24F5-4E50-9446-CC83E929DFD9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "shifts-logger", "shifts-logger.csproj", "{6732BE24-01BF-4299-A9A2-BD7D132BCB92}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6F96B8E8-24F5-4E50-9446-CC83E929DFD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6F96B8E8-24F5-4E50-9446-CC83E929DFD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6F96B8E8-24F5-4E50-9446-CC83E929DFD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6F96B8E8-24F5-4E50-9446-CC83E929DFD9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6732BE24-01BF-4299-A9A2-BD7D132BCB92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6732BE24-01BF-4299-A9A2-BD7D132BCB92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6732BE24-01BF-4299-A9A2-BD7D132BCB92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6732BE24-01BF-4299-A9A2-BD7D132BCB92}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {D4135F5B-ED56-48A7-9175-1B9D361DFF7B}
+		SolutionGuid = {4F2EC3EF-B663-4833-9BB4-BE05AAD2FBEE}
 	EndGlobalSection
 EndGlobal
