@@ -20,7 +20,7 @@ namespace shifts_logger.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Shift>>> Index()
         {
-            return await service.GetAll();        
+            return Json(await service.GetAll());        
         }
 
         [HttpGet("{id}")]
@@ -38,16 +38,20 @@ namespace shifts_logger.Controllers
 
         // GET: Shifts/Edit/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Start,End")] Shift shift)
+        public async Task<ActionResult> Edit(int id, [Bind("Id,Start,End")] Shift shift)
         {
-            return View(shift);
+            if(!(await service.Edit(id, shift)))
+                return NotFound();
+            return Json(shift);        
         }
 
         // POST: Shifts/Delete/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            return RedirectToAction(nameof(Index));
+            if (!(await service.Delete(id)))
+                return NotFound();
+            return NoContent();
         }
     }
 }
