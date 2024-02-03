@@ -24,9 +24,9 @@ namespace shifts_logger.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> Details(int? id)
+        public async Task<ActionResult<Shift>> Details(int id)
         {
-            return View();
+            return Json(await service.GetOne(id));
         }
 
         [HttpPost]

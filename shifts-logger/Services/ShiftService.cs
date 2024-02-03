@@ -20,6 +20,11 @@ namespace shifts_logger.Services
             return await _context.Shifts.OrderBy(x => x.Id).ToListAsync();
         }
 
+        public async Task<Shift> GetOne(int id)
+        {
+            Shift shift = await _context.Shifts.FindAsync(id);
+            return shift;
+        }
         public async Task<bool> Edit(int id, Shift newShift)
         {
             Shift shift = await _context.Shifts.FindAsync(id);
