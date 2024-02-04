@@ -8477,11 +8477,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Dante\\Desktop\\csharp-console-projects\\shifts-logger\\shifts-logger.csproj",
-      "projectName": "shifts-logger",
-      "projectPath": "C:\\Users\\Dante\\Desktop\\csharp-console-projects\\shifts-logger\\shifts-logger.csproj",
+      "projectUniqueName": "C:\\Users\\Dante\\Desktop\\csharp-console-projects\\shifts-logger\\ServerSide\\shifts-logger-server.csproj",
+      "projectName": "shifts-logger-server",
+      "projectPath": "C:\\Users\\Dante\\Desktop\\csharp-console-projects\\shifts-logger\\ServerSide\\shifts-logger-server.csproj",
       "packagesPath": "C:\\Users\\Dante\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Dante\\Desktop\\csharp-console-projects\\shifts-logger\\obj\\",
+      "outputPath": "C:\\Users\\Dante\\Desktop\\csharp-console-projects\\shifts-logger\\ServerSide\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Dante\\AppData\\Roaming\\NuGet\\NuGet.Config",

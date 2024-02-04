@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "swl5vY5W+TdWMssxv0CDeEZu5D+9/YXlNeJwpxLdq19eG3498tOvpv/wE26fniU01VO2E1+4dz9LyTc4AEVoGQ==",
+  "dgSpecHash": "iIyqVxPWXNWUlzp+I9/IwVBB0hEoiQTTqnuvIMsmsXJB1eXTWurepjZis4kfDJ85hDUkKplBII7bfQscVuO/Ag==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Dante\\Desktop\\csharp-console-projects\\shifts-logger\\shifts-logger.csproj",
+  "projectFilePath": "C:\\Users\\Dante\\Desktop\\csharp-console-projects\\shifts-logger\\ServerSide\\shifts-logger-server.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Dante\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\Dante\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",

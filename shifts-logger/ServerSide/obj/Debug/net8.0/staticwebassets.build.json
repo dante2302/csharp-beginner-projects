@@ -1,8 +1,8 @@
 {
   "Version": 1,
-  "Hash": "p6UwBH/hRV4m+uTxqjbwGdH+raxQO0Kg4tKM7imhVyk=",
-  "Source": "shifts-logger",
-  "BasePath": "_content/shifts-logger",
+  "Hash": "O2372UlkJlRdCDz/6v4Fn1FOxXy1QG+gOWxczct3CW4=",
+  "Source": "shifts-logger-server",
+  "BasePath": "_content/shifts-logger-server",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
@@ -47,12 +47,12 @@
       "OriginalItemSpec": "C:\\Users\\Dante\\.nuget\\packages\\microsoft.aspnetcore.components.quickgrid\\8.0.1\\staticwebassets\\QuickGrid.razor.js"
     },
     {
-      "Identity": "C:\\Users\\Dante\\Desktop\\csharp-console-projects\\shifts-logger\\obj\\Debug\\net8.0\\scopedcss\\bundle\\shifts-logger.styles.css",
-      "SourceId": "shifts-logger",
+      "Identity": "C:\\Users\\Dante\\Desktop\\csharp-console-projects\\shifts-logger\\ServerSide\\obj\\Debug\\net8.0\\scopedcss\\bundle\\shifts-logger-server.styles.css",
+      "SourceId": "shifts-logger-server",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\Dante\\Desktop\\csharp-console-projects\\shifts-logger\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
-      "BasePath": "_content/shifts-logger",
-      "RelativePath": "shifts-logger.styles.css",
+      "ContentRoot": "C:\\Users\\Dante\\Desktop\\csharp-console-projects\\shifts-logger\\ServerSide\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
+      "BasePath": "_content/shifts-logger-server",
+      "RelativePath": "shifts-logger-server.styles.css",
       "AssetKind": "All",
       "AssetMode": "CurrentProject",
       "AssetRole": "Primary",
@@ -63,7 +63,7 @@
       "AssetTraitValue": "ApplicationBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\Dante\\Desktop\\csharp-console-projects\\shifts-logger\\obj\\Debug\\net8.0\\scopedcss\\bundle\\shifts-logger.styles.css"
+      "OriginalItemSpec": "C:\\Users\\Dante\\Desktop\\csharp-console-projects\\shifts-logger\\ServerSide\\obj\\Debug\\net8.0\\scopedcss\\bundle\\shifts-logger-server.styles.css"
     }
   ]
 }

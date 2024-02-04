@@ -241,8 +241,6 @@ C:\Users\Dante\Desktop\csharp-console-projects\shifts-logger\ServerSide\bin\Debu
 C:\Users\Dante\Desktop\csharp-console-projects\shifts-logger\ServerSide\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Windows.Extensions.dll
 C:\Users\Dante\Desktop\csharp-console-projects\shifts-logger\ServerSide\obj\Debug\net8.0\shifts-logger-server.csproj.AssemblyReference.cache
 C:\Users\Dante\Desktop\csharp-console-projects\shifts-logger\ServerSide\obj\Debug\net8.0\shifts-logger-server.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Dante\Desktop\csharp-console-projects\shifts-logger\ServerSide\obj\Debug\net8.0\shifts-logger-server.AssemblyInfoInputs.cache
-C:\Users\Dante\Desktop\csharp-console-projects\shifts-logger\ServerSide\obj\Debug\net8.0\shifts-logger-server.AssemblyInfo.cs
 C:\Users\Dante\Desktop\csharp-console-projects\shifts-logger\ServerSide\obj\Debug\net8.0\shifts-logger-server.csproj.CoreCompileInputs.cache
 C:\Users\Dante\Desktop\csharp-console-projects\shifts-logger\ServerSide\obj\Debug\net8.0\shifts-logger-server.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Dante\Desktop\csharp-console-projects\shifts-logger\ServerSide\obj\Debug\net8.0\shifts-logger-server.MvcApplicationPartsAssemblyInfo.cache
