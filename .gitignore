@@ -69,6 +69,8 @@ $RECYCLE.BIN/
 
 # Ignore bin and obj folders
 */bin/
+*/bin/
 */obj/
+*/obj/*
 */.vs/
 .vs/
