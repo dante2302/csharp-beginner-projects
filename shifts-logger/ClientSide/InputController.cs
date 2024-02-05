@@ -1,4 +1,6 @@
 ﻿
+using System.Runtime.Serialization;
+
 public class InputController
 {
     private static readonly ShiftService shiftSrv = new ShiftService();
@@ -16,16 +18,15 @@ public class InputController
             case "1":
                 Console.Clear();
                 Console.WriteLine("Creating A New Shift: ");
-
-                DateTime start = Convert.ToDateTime(Console.ReadLine());
-                DateTime end = Convert.ToDateTime(Console.ReadLine());
-                bool isCreated = await shiftSrv.Create(new Shift { End = end, Start = start });
+                Shift newShift = GetNewShiftInput();
+                bool isCreated = await shiftSrv.Create(newShift);
 
                 if (isCreated)
                     Console.WriteLine("Successfully created!");
                 else
                     Console.WriteLine("Something went wrong!");
 
+                await BackToMain();
                 break;
 
             case "2":
@@ -40,7 +41,8 @@ public class InputController
                 break;
 
             case "3":
-                int id = Convert.ToInt32(Console.ReadLine());
+                Console.Write("Id of the shift you want to see: ");
+                int id = Int32.Parse(Console.ReadLine());
                 Shift shift = await shiftSrv.GetOne(id);
 
                 if (shift is null)
@@ -52,7 +54,27 @@ public class InputController
                 break;
 
             case "4":
+                Console.Clear();
+                Console.Write("Enter the id of the shift you want to edit: ");
+                int idForEdit = Int32.Parse(Console.ReadLine());
+
+                while(await shiftSrv.GetOne(idForEdit) is null)
+                {
                     Console.Clear();
+                    Console.WriteLine("No shift with he given id");
+                    Console.Write("Enter the id of the shift you want to edit: ");
+                    idForEdit = Convert.ToInt32(Console.ReadLine());
+                }
+
+                Shift editedShift = GetNewShiftInput();
+                bool success =  await shiftSrv.Edit(idForEdit, editedShift);
+
+                if (success)
+                    Console.WriteLine("Edited successfully!");
+                else
+                    Console.WriteLine("Something went wrong!");
+
+                await BackToMain();
                 break;
 
             case "5":
@@ -79,4 +101,45 @@ public class InputController
         await Initialize();
     }
 
+    public static Shift GetNewShiftInput()
+    {
+
+        string dateFormat = "yyyy-MM-dd";
+        string timeFormat = "HH:mm";
+
+        Console.Write("Date: ");
+        string dateString = Console.ReadLine();
+
+        DateOnly date;
+
+        while(!DateOnly.TryParseExact(dateString,format: dateFormat ,out date))
+        {
+            Console.WriteLine($"Invalid input! Follow this format: {dateFormat}");
+            dateString = Console.ReadLine();
+        }
+
+        Console.Write("Start: ");
+        string startString = Console.ReadLine();
+
+        TimeOnly startTime;
+
+        while(!TimeOnly.TryParseExact(startString, format: timeFormat, out startTime))
+        {
+            Console.WriteLine($"Invalid input! Follow this format: {timeFormat}");
+            startString = Console.ReadLine();
+        }
+
+        Console.Write("End: ");
+        string endString = Console.ReadLine();
+
+        TimeOnly endTime;
+
+        while(!TimeOnly.TryParseExact(endString, format: timeFormat, out endTime))
+        {
+            Console.WriteLine($"Invalid input! Follow this format: {timeFormat}");
+            endString = Console.ReadLine();
+        }
+
+        return new Shift() { Date = date, Start = startTime, End = endTime };
+    }
 }

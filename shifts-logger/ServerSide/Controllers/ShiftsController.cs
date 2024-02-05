@@ -30,9 +30,9 @@ namespace shifts_logger.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Shift>> Create([Bind("Id,Start,End")] Shift shift)
+        public async Task<ActionResult<Shift>> Create( Shift shift)
         {
-            service.Add(shift);
+            await service.Add(shift);
             return CreatedAtAction(nameof(Create), new { id = shift.Id}, shift);
         }
 

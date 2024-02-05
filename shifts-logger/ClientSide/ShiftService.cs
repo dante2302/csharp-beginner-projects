@@ -1,4 +1,6 @@
 ﻿using System.Net.Http.Json;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Text.Json;
 
 public class ShiftService
@@ -22,8 +24,27 @@ public class ShiftService
 
     public async Task<bool> Create(Shift newShift)
     {
-        using StringContent jsonContent = new(JsonSerializer.Serialize(newShift));
+        using StringContent jsonContent = new(
+            JsonSerializer.Serialize(newShift),
+            encoding: Encoding.UTF8,
+            mediaType: MediaTypeHeaderValue.Parse("application/json")
+        ); 
+
         var response = await _httpclient.PostAsync("shifts", jsonContent);
+        return response.IsSuccessStatusCode;
+    }
+
+    public async Task<bool> Edit(int id, Shift editedShift)
+    {
+        using StringContent jsonContent = new(
+            JsonSerializer.Serialize(editedShift),
+            encoding: Encoding.UTF8,
+            mediaType: MediaTypeHeaderValue.Parse("application/json")
+            );
+
+        Printer.PrintShifts([editedShift]);
+        var response = await _httpclient.PutAsync($"shifts/{id}", jsonContent);
+        Console.WriteLine(response.StatusCode);
         return response.IsSuccessStatusCode;
     }
 
