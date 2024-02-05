@@ -1,11 +1,8 @@
-using shifts_logger;
 using shifts_logger.Data.DbContexts;
-using shifts_logger.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-builder.Services.AddHttpClient<ShiftClientService>();
 builder.Services.AddHttpsRedirection((options) =>
 {
     options.HttpsPort = 443;

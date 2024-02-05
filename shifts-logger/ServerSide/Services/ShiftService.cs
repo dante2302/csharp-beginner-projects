@@ -9,10 +9,10 @@ namespace shifts_logger.Services
     {
         private readonly ShiftContext _context = new();
         
-        public void Add(Shift shift)
+        public async Task Add(Shift shift)
         {
             _context.Add(shift);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public async Task<List<Shift>> GetAll()
@@ -30,7 +30,11 @@ namespace shifts_logger.Services
             Shift shift = await _context.Shifts.FindAsync(id);
             if (shift is null)
                 return false;
-            shift = newShift;
+
+            shift.Date = newShift.Date;
+            shift.Start = newShift.Start;
+            shift.End = newShift.End;
+
             await _context.SaveChangesAsync();
             return true;
         }
