@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\build\shifts-logger-server.props" />
-</Project>
