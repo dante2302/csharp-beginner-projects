@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("shifts-logger-client")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0096c9c2d9941a297a8220fa83a479ce5ba2c2bd")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c57e726321f7f91ad24e03701fe54bb5029f1f1a")]
 [assembly: System.Reflection.AssemblyProductAttribute("shifts-logger-client")]
 [assembly: System.Reflection.AssemblyTitleAttribute("shifts-logger-client")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

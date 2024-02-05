@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "dW1WKQE76R0zcwW1C1dTxTE0OsVB/n8DTUp9bJDYRJuIR9Qj5QaUcGIaM2rH7hyABTBuBx5oz2iw2Lmm3Ph/Ig==",
+  "dgSpecHash": "e894ncdpTvuDc+mlSlKZdFfGcBkeBj7gWjrDTNBlfQmawzHiFVlR6hqlbu/3mhDDi43NQNB22/+ZJuDgpRTroA==",
   "success": true,
   "projectFilePath": "C:\\Users\\Dante\\Desktop\\csharp-console-projects\\shifts-logger\\ClientSide\\shifts-logger-client.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Dante\\.nuget\\packages\\consoletableext\\3.2.0\\consoletableext.3.2.0.nupkg.sha512"
+  ],
   "logs": []
 }

@@ -13,3 +13,6 @@ C:\Users\Dante\Desktop\csharp-console-projects\shifts-logger\ClientSide\obj\Debu
 C:\Users\Dante\Desktop\csharp-console-projects\shifts-logger\ClientSide\obj\Debug\net8.0\shifts-logger-client.pdb
 C:\Users\Dante\Desktop\csharp-console-projects\shifts-logger\ClientSide\obj\Debug\net8.0\shifts-logger-client.genruntimeconfig.cache
 C:\Users\Dante\Desktop\csharp-console-projects\shifts-logger\ClientSide\obj\Debug\net8.0\ref\shifts-logger-client.dll
+C:\Users\Dante\Desktop\csharp-console-projects\shifts-logger\ClientSide\bin\Debug\net8.0\ConsoleTableExt.dll
+C:\Users\Dante\Desktop\csharp-console-projects\shifts-logger\ClientSide\obj\Debug\net8.0\shifts-logger-client.csproj.AssemblyReference.cache
+C:\Users\Dante\Desktop\csharp-console-projects\shifts-logger\ClientSide\obj\Debug\net8.0\shifts-logger-client.csproj.CopyComplete

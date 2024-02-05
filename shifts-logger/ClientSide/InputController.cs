@@ -1,11 +1,11 @@
 ﻿
 public class InputController
 {
-    private static readonly ShiftService srv = new ShiftService();
+    private static readonly ShiftService shiftSrv = new ShiftService();
     public static async Task Initialize()
     {
         Console.Clear();
-        PrintMainMenu();
+        Printer.PrintMainMenu();
         string input = Console.ReadLine();
         switch (input)
         {
@@ -14,35 +14,69 @@ public class InputController
                 break;
 
             case "1":
-                await srv.GetAllShifts();
+                Console.Clear();
+                Console.WriteLine("Creating A New Shift: ");
+
+                DateTime start = Convert.ToDateTime(Console.ReadLine());
+                DateTime end = Convert.ToDateTime(Console.ReadLine());
+                bool isCreated = await shiftSrv.Create(new Shift { End = end, Start = start });
+
+                if (isCreated)
+                    Console.WriteLine("Successfully created!");
+                else
+                    Console.WriteLine("Something went wrong!");
+
                 break;
 
             case "2":
-                await srv.GetOneShift(6);
-                Console.ReadKey();
+                List<Shift> shifts = await shiftSrv.GetAll();
+
+                if (shifts is null)
+                    Console.WriteLine("No shifts entered.");
+                else
+                    Printer.PrintShifts(shifts);
+
+                await BackToMain();
                 break;
+
             case "3":
+                int id = Convert.ToInt32(Console.ReadLine());
+                Shift shift = await shiftSrv.GetOne(id);
 
+                if (shift is null)
+                    Console.WriteLine("No shift with the given id");
+                else
+                    Printer.PrintShifts([shift]);
+
+                await BackToMain();
                 break;
+
             case "4":
-
+                    Console.Clear();
                 break;
-            case "5":
 
+            case "5":
+                Console.Clear();
+                Console.Write("Id of the shift for deletion: ");
+
+                int idForDeletion = Convert.ToInt32(Console.ReadLine());
+                bool isDeleted = await shiftSrv.Delete(idForDeletion);
+
+                if (isDeleted)
+                    Console.WriteLine("Successfully deleted");
+                else
+                    Console.WriteLine("Something went wrong!");
+
+                await BackToMain();
                 break;
 
         }
     }
-
-    private static void PrintMainMenu()
+    public static async Task BackToMain()
     {
-        Console.WriteLine("Hello! This Is Your Shift Logger!");
-        Console.WriteLine("0 - Exit");
-        Console.WriteLine("1 - Create A Shift");
-        Console.WriteLine("2 - Read All Shifts");
-        Console.WriteLine("3 - Read One Shift");
-        Console.WriteLine("4 - Edit A Shift");
-        Console.WriteLine("5 - Delete A Shift");
-        Console.WriteLine("Choose an option: ");
+        Console.WriteLine("Press Any Key To Go Back...");
+        Console.ReadKey();
+        await Initialize();
     }
+
 }
