@@ -1,6 +1,4 @@
-﻿using Database;
-using Spectre.Console;
-
+﻿
 namespace Visualization
 {
     public static class Visualizer

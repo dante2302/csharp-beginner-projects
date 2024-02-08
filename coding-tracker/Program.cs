@@ -1,3 +1,3 @@
-﻿Database.DataAccessManager.Initialize();
-Menu.MenuHandler.MainMenu();
+﻿DataAccessManager.Initialize();
+MenuHandler.MainMenu();
 
