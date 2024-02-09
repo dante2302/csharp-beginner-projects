@@ -6,6 +6,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PlatformTarget>x64</PlatformTarget>
+	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+  <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +22,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\coding-tracker.csproj" />
   </ItemGroup>
 
 </Project>

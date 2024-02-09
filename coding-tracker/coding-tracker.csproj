@@ -6,6 +6,9 @@
     <RootNamespace>coding_tracker</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	  <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+	  <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+
   </PropertyGroup>
 
   <ItemGroup>

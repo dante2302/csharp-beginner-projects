@@ -22,11 +22,13 @@ namespace coding_tracker.tests
         public void ValidateDate_ShouldValidateWrongFormatDate()
         {
             bool expected = false;
-            string dateToValidate = "132/123/2002";
+            string[] datesForValidation = ["132/123/2002", "123/01/2002", "12/01/2002", "01/01/200002", "001/001/200002"];
 
-            bool actual = Validator.ValidateDate(dateToValidate);
-
-            Assert.Equal(expected, actual);
+            foreach(string date in datesForValidation)
+            {
+                bool actual = Validator.ValidateDate(date);
+                Assert.Equal(expected, actual);
+            }
         }
 
         [Fact]
@@ -36,6 +38,18 @@ namespace coding_tracker.tests
             string dateToValidate = "31/02/2022";
 
             bool actual = Validator.ValidateDate(dateToValidate);
+
+            Assert.Equal(expected, actual);
+        }
+
+
+        [Fact]
+        public void ValidateTime_ShouldValidateBasicTime()
+        {
+            bool expected = true;
+            string time = "12/24";
+
+            bool actual = Validator.ValidateTime(time);
 
             Assert.Equal(expected, actual);
         }

@@ -97,3 +97,7 @@ C:\Users\Dante\Desktop\csharp-console-projects\coding-tracker.tests\bin\Debug\ne
 C:\Users\Dante\Desktop\csharp-console-projects\coding-tracker.tests\bin\Debug\net8.0\zh-Hant\Microsoft.TestPlatform.CrossPlatEngine.resources.dll
 C:\Users\Dante\Desktop\csharp-console-projects\coding-tracker.tests\bin\Debug\net8.0\zh-Hant\Microsoft.VisualStudio.TestPlatform.Common.resources.dll
 C:\Users\Dante\Desktop\csharp-console-projects\coding-tracker.tests\obj\Debug\net8.0\coding-tracker.tests.csproj.CopyComplete
+C:\Users\Dante\Desktop\csharp-console-projects\coding-tracker\coding-tracker.tests\obj\Debug\net8.0\coding-tracker.tests.csproj.AssemblyReference.cache
+C:\Users\Dante\Desktop\csharp-console-projects\coding-tracker\coding-tracker.tests\obj\Debug\net8.0\coding-tracker.tests.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Dante\Desktop\csharp-console-projects\coding-tracker\coding-tracker.tests\obj\Debug\net8.0\coding-tracker.tests.csproj.CoreCompileInputs.cache
+C:\Users\Dante\Desktop\csharp-console-projects\coding-tracker\coding-tracker.tests\obj\Debug\net8.0\coding-tracker.tests.sourcelink.json
